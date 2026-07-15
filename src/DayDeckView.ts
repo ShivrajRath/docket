@@ -1,5 +1,5 @@
 /**
- * DocketView.ts — Main ItemView that hosts the Docket plugin UI.
+ * DayDeckView.ts — Main ItemView that hosts the DayDeck plugin UI.
  *
  * Responsibilities:
  *  - Render the top navigation bar (tabs)
@@ -9,16 +9,16 @@
  */
 
 import { ItemView, WorkspaceLeaf } from 'obsidian';
-import DocketPlugin from './main';
+import DayDeckPlugin from './main';
 import { DashboardTab } from './DashboardTab';
 import { ArchiveTab } from './ArchiveTab';
 
-export const VIEW_TYPE_DOCKET = 'docket-view';
+export const VIEW_TYPE_DAYDECK = 'daydeck-view';
 
 type TabName = 'dashboard' | 'archive';
 
-export class DocketView extends ItemView {
-  private plugin: DocketPlugin;
+export class DayDeckView extends ItemView {
+  private plugin: DayDeckPlugin;
 
   // State
   private currentTab: TabName = 'dashboard';
@@ -36,7 +36,7 @@ export class DocketView extends ItemView {
   private dashboardPanel!: HTMLElement;
   private archivePanel!: HTMLElement;
 
-  constructor(leaf: WorkspaceLeaf, plugin: DocketPlugin) {
+  constructor(leaf: WorkspaceLeaf, plugin: DayDeckPlugin) {
     super(leaf);
     this.plugin = plugin;
   }
@@ -46,11 +46,11 @@ export class DocketView extends ItemView {
   // -------------------------------------------------------------------------
 
   getViewType(): string {
-    return VIEW_TYPE_DOCKET;
+    return VIEW_TYPE_DAYDECK;
   }
 
   getDisplayText(): string {
-    return 'Docket';
+    return 'DayDeck';
   }
 
   getIcon(): string {
@@ -82,7 +82,7 @@ export class DocketView extends ItemView {
 
     const brand = navLeft.createDiv('docket-brand');
     brand.createSpan({ cls: 'docket-brand-icon', text: '🗂️' });
-    brand.createSpan({ cls: 'docket-brand-name', text: 'Docket' });
+    brand.createSpan({ cls: 'docket-brand-name', text: 'DayDeck' });
 
     const tabGroup = navLeft.createDiv('docket-tab-group');
     const tabs: Array<{ id: TabName; label: string }> = [

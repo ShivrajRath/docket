@@ -10,7 +10,7 @@
  */
 
 import { Menu, Modal, Setting } from 'obsidian';
-import DocketPlugin from './main';
+import DayDeckPlugin from './main';
 import {
   Task,
   Bucket,
@@ -26,9 +26,9 @@ let _draggedBucketId: string | null = null;
 
 export class DashboardTab {
   private container: HTMLElement;
-  private plugin: DocketPlugin;
+  private plugin: DayDeckPlugin;
 
-  constructor(container: HTMLElement, plugin: DocketPlugin) {
+  constructor(container: HTMLElement, plugin: DayDeckPlugin) {
     this.container = container;
     this.plugin = plugin;
   }
@@ -840,10 +840,10 @@ export class DashboardTab {
 }
 
 class BucketEditModal extends Modal {
-  private plugin: DocketPlugin;
+  private plugin: DayDeckPlugin;
   private bucket: Bucket;
 
-  constructor(plugin: DocketPlugin, bucket: Bucket) {
+  constructor(plugin: DayDeckPlugin, bucket: Bucket) {
     super(plugin.app);
     this.plugin = plugin;
     this.bucket = bucket;
@@ -939,10 +939,10 @@ class BucketEditModal extends Modal {
 }
 
 class ReminderModal extends Modal {
-  private plugin: DocketPlugin;
+  private plugin: DayDeckPlugin;
   private task: Task;
 
-  constructor(plugin: DocketPlugin, task: Task) {
+  constructor(plugin: DayDeckPlugin, task: Task) {
     super(plugin.app);
     this.plugin = plugin;
     this.task = task;
@@ -1025,10 +1025,10 @@ class ReminderModal extends Modal {
 }
 
 class BucketTooltipModal extends Modal {
-  private plugin: DocketPlugin;
+  private plugin: DayDeckPlugin;
   private bucket: Bucket;
 
-  constructor(plugin: DocketPlugin, bucket: Bucket) {
+  constructor(plugin: DayDeckPlugin, bucket: Bucket) {
     super(plugin.app);
     this.plugin = plugin;
     this.bucket = bucket;

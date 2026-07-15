@@ -1,5 +1,5 @@
 /**
- * types.ts — Shared interfaces and utility functions for the Docket plugin.
+ * types.ts — Shared interfaces and utility functions for the DayDeck plugin.
  */
 
 // ---------------------------------------------------------------------------
@@ -10,7 +10,7 @@
 export type ID = string;
 
 /**
- * A single task item managed by Docket.
+ * A single task item managed by DayDeck.
  */
 export interface Task {
   /** Unique identifier */
@@ -88,7 +88,7 @@ export interface Tag {
 /**
  * All persistent plugin data — serialized to data.json via Obsidian's Plugin.loadData/saveData.
  */
-export interface DocketSettings {
+export interface DayDeckSettings {
   /** All configured buckets */
   buckets: Bucket[];
   /** All configured semantic tags */
@@ -250,7 +250,7 @@ export const DEFAULT_TAGS: Tag[] = [
 ];
 
 /** Full default settings object */
-export const DEFAULT_SETTINGS: DocketSettings = {
+export const DEFAULT_SETTINGS: DayDeckSettings = {
   buckets: DEFAULT_BUCKETS,
   tags: DEFAULT_TAGS,
   tasks: [],

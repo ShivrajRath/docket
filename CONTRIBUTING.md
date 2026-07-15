@@ -1,6 +1,6 @@
-# Contributing to Docket
+# Contributing to DayDeck
 
-Thank you for your interest in contributing to Docket! I appreciate any help, whether it's bug fixes, new features, documentation improvements, or bug reports.
+Thank you for your interest in contributing to DayDeck! I appreciate any help, whether it's bug fixes, new features, documentation improvements, or bug reports.
 
 ## Getting Started
 
@@ -13,28 +13,32 @@ Thank you for your interest in contributing to Docket! I appreciate any help, wh
 ### Development Setup
 
 1. **Clone the repository**:
+
    ```bash
-   git clone https://github.com/ShivrajRath/docket.git
-   cd docket
+   git clone https://github.com/ShivrajRath/daydeck.git
+   cd daydeck
    ```
 
 2. **Install dependencies**:
+
    ```bash
    npm install
    ```
 
 3. **Run development mode**:
+
    ```bash
    npm run dev
    ```
 
 4. **Build the plugin**:
+
    ```bash
    npm run build
    ```
 
 5. **Install in Obsidian**:
-   - Copy the built files to your Obsidian vault's `.obsidian/plugins/docket` folder
+   - Copy the built files to your Obsidian vault's `.obsidian/plugins/daydeck` folder
    - Enable the plugin in Obsidian's Community Plugins settings
 
 ## Making Changes
@@ -74,7 +78,7 @@ Thank you for your interest in contributing to Docket! I appreciate any help, wh
 When reporting bugs, please include:
 
 - Obsidian version
-- Docket version
+- DayDeck version
 - Steps to reproduce the issue
 - Expected vs actual behavior
 - Screenshots if applicable
@@ -86,11 +90,11 @@ I'm open to feature suggestions! When requesting a feature:
 
 - Describe the use case clearly
 - Explain how it would benefit users
-- Consider if it fits with Docket's philosophy
+- Consider if it fits with DayDeck's philosophy
 - Provide examples if possible
 
 ## Questions
 
-Feel free to open an issue if you have questions about contributing or using Docket.
+Feel free to open an issue if you have questions about contributing or using DayDeck.
 
-Thank you for contributing to Docket! 🚀
+Thank you for contributing to DayDeck! 🚀

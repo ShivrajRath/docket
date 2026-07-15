@@ -1,17 +1,17 @@
 /**
- * settings.ts — PluginSettingTab for Docket.
+ * settings.ts — PluginSettingTab for DayDeck.
  *
  * Provides full CRUD UI for Buckets and Tags.
  */
 
 import { App, PluginSettingTab } from 'obsidian';
-import DocketPlugin from './main';
+import DayDeckPlugin from './main';
 import { generateId, normalizeBucketOrder } from './types';
 
-export class DocketSettingTab extends PluginSettingTab {
-  plugin: DocketPlugin;
+export class DayDeckSettingTab extends PluginSettingTab {
+  plugin: DayDeckPlugin;
 
-  constructor(app: App, plugin: DocketPlugin) {
+  constructor(app: App, plugin: DayDeckPlugin) {
     super(app, plugin);
     this.plugin = plugin;
   }
@@ -22,7 +22,7 @@ export class DocketSettingTab extends PluginSettingTab {
     containerEl.addClass('docket-settings');
 
     const header = containerEl.createDiv('docket-settings-header');
-    header.createEl('h2', { text: '🗂️ Docket' });
+    header.createEl('h2', { text: '🗂️ DayDeck' });
     header.createEl('p', {
       cls: 'docket-settings-intro',
       text: 'Configure your task containers and semantic tags. Changes apply immediately.',

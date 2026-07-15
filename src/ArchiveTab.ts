@@ -10,15 +10,15 @@
  *  - Task count summary in the header
  */
 
-import DocketPlugin from './main';
+import DayDeckPlugin from './main';
 import { Task } from './types';
 
 export class ArchiveTab {
   private container: HTMLElement;
-  private plugin: DocketPlugin;
+  private plugin: DayDeckPlugin;
   private searchQuery = '';
 
-  constructor(container: HTMLElement, plugin: DocketPlugin) {
+  constructor(container: HTMLElement, plugin: DayDeckPlugin) {
     this.container = container;
     this.plugin = plugin;
   }

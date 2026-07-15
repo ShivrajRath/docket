@@ -1,8 +1,8 @@
-# Docket
+# DayDeck
 
 **Your day, compiled.**
 
-Docket is a cognitive task management dashboard for Obsidian designed to bridge the gap between **strategic thinking** and **immediate execution**. It replaces traditional linear to-do lists with a flexible, visual multiple group system that adapts to your workflow.
+DayDeck is a cognitive task management dashboard for Obsidian designed to bridge the gap between **strategic thinking** and **immediate execution**. It replaces traditional linear to-do lists with a flexible, visual multiple group system that adapts to your workflow.
 
 ## 🧠 The Philosophy
 
@@ -11,14 +11,14 @@ In the "Two Hat" workflow:
 - **Hat 1: The Strategist** - High-level sections (Learning, Admin, Backlog). This is your conceptual workspace where you organize _what_ needs to be done, not _when_.
 - **Hat 2: The Operator** - "Today" and "Next". This is your execution engine. Time is the only resource here, so tasks must be specific and actionable.
 
-Docket ensures you never lose sight of the big picture while staying focused on shipping today's work.
+DayDeck ensures you never lose sight of the big picture while staying focused on shipping today's work.
 
 ---
 
 ## 🚀 Quick Start
 
-1. **Install Docket** from the Obsidian Community Plugins store
-2. **Open Docket** via the ribbon icon or `Ctrl+P` → "Open Docket dashboard"
+1. **Install DayDeck** from the Obsidian Community Plugins store
+2. **Open DayDeck** via the ribbon icon or `Ctrl+P` → "Open DayDeck dashboard"
 3. **Start capturing tasks** using the Quick Capture bar at the top
 4. **Organize your workflow** by dragging sections and tasks to fit your needs
 
@@ -103,7 +103,7 @@ Docket ensures you never lose sight of the big picture while staying focused on 
 
 1. Open **Settings → Community Plugins**
 2. Disable **Restricted Mode**
-3. Browse plugins and search for "Docket"
+3. Browse plugins and search for "DayDeck"
 4. Click **Install** and then **Enable**
 
 ### Option 2: Manual Installation
@@ -125,7 +125,7 @@ Docket ensures you never lose sight of the big picture while staying focused on 
 
 ## ⚙️ Configuration
 
-Open the **Docket Settings** tab from the plugin's sidebar menu to customize:
+Open the **DayDeck Settings** tab from the plugin's sidebar menu to customize:
 
 ### Sections
 
@@ -148,28 +148,28 @@ Open the **Docket Settings** tab from the plugin's sidebar menu to customize:
 
 ## ⌨️ Usage Quick Reference
 
-| Action           | Method                             | Description                            |
-| :--------------- | :--------------------------------- | :------------------------------------- |
-| Open Docket      | `Ctrl+P` → "Open Docket dashboard" | Opens/focuses the dashboard            |
-| New Task         | Type in Quick Capture + `Enter`    | Adds task to active section            |
-| Tag Task         | `#tag` in task text                | Assigns a semantic tag                 |
-| Filter by Tag    | Click tag pill in Quick Capture    | Filter view to show only tagged tasks  |
-| Multi-tag Filter | Click multiple tag pills           | Filter by multiple tags simultaneously |
-| Clear Filters    | Click "All" pill or `Escape`       | Remove all active filters              |
-| Move Task        | Drag task card                     | Move between sections or reorder       |
-| Reorder Section  | Drag section header (⠿)            | Reorder sections on dashboard          |
-| Resize Section   | Drag right edge of section         | Adjust section width                   |
-| Edit Task        | Double-click task text             | Inline edit with tag support           |
-| Context Menu     | Right-click task card              | Access all task actions                |
-| Set Reminder     | Click 🔔 icon on task              | Set date/time reminder                 |
-| Clear Reminder   | Right-click → Clear reminder       | Remove reminder from task              |
-| Delete Task      | Click × on card or context menu    | Permanently removes                    |
-| Complete Task    | Click checkbox on card             | Moves to Archive                       |
-| Restore Task     | Click "Restore" in Archive         | Moves back to Today section            |
-| Archive Search   | Type in Archive search bar         | Filter completed tasks                 |
-| Section Info     | Click ℹ️ on section header         | View section description and examples  |
-| Edit Section     | Click ✏️ on section header         | Modify section properties              |
-| Add Section      | Click "+ Add Section" button       | Create new custom section              |
+| Action           | Method                              | Description                            |
+| :--------------- | :---------------------------------- | :------------------------------------- |
+| Open DayDeck     | `Ctrl+P` → "Open DayDeck dashboard" | Opens/focuses the dashboard            |
+| New Task         | Type in Quick Capture + `Enter`     | Adds task to active section            |
+| Tag Task         | `#tag` in task text                 | Assigns a semantic tag                 |
+| Filter by Tag    | Click tag pill in Quick Capture     | Filter view to show only tagged tasks  |
+| Multi-tag Filter | Click multiple tag pills            | Filter by multiple tags simultaneously |
+| Clear Filters    | Click "All" pill or `Escape`        | Remove all active filters              |
+| Move Task        | Drag task card                      | Move between sections or reorder       |
+| Reorder Section  | Drag section header (⠿)             | Reorder sections on dashboard          |
+| Resize Section   | Drag right edge of section          | Adjust section width                   |
+| Edit Task        | Double-click task text              | Inline edit with tag support           |
+| Context Menu     | Right-click task card               | Access all task actions                |
+| Set Reminder     | Click 🔔 icon on task               | Set date/time reminder                 |
+| Clear Reminder   | Right-click → Clear reminder        | Remove reminder from task              |
+| Delete Task      | Click × on card or context menu     | Permanently removes                    |
+| Complete Task    | Click checkbox on card              | Moves to Archive                       |
+| Restore Task     | Click "Restore" in Archive          | Moves back to Today section            |
+| Archive Search   | Type in Archive search bar          | Filter completed tasks                 |
+| Section Info     | Click ℹ️ on section header          | View section description and examples  |
+| Edit Section     | Click ✏️ on section header          | Modify section properties              |
+| Add Section      | Click "+ Add Section" button        | Create new custom section              |
 
 ---
 
@@ -300,18 +300,18 @@ Open the **Docket Settings** tab from the plugin's sidebar menu to customize:
 
 ## 🤝 Contributing
 
-I welcome pull requests, bug fixes, and contributions from the community! If you'd like to contribute to Docket, please check out the [CONTRIBUTING.md](CONTRIBUTING.md) guide for details on how to get started.
+I welcome pull requests, bug fixes, and contributions from the community! If you'd like to contribute to DayDeck, please check out the [CONTRIBUTING.md](CONTRIBUTING.md) guide for details on how to get started.
 
 ---
 
 ## 🤝 Support
 
-Found a bug or have a feature request? Please [open an issue](https://github.com/ShivrajRath/docket/issues) on GitHub.
+Found a bug or have a feature request? Please [open an issue](https://github.com/ShivrajRath/daydeck/issues) on GitHub.
 
 ---
 
 ## ☕ Buy Me a Coffee
 
-If you find Docket helpful and want to support its development, consider buying me a coffee!
+If you find DayDeck helpful and want to support its development, consider buying me a coffee!
 
 [![Buy me a coffee](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/raths)

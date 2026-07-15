@@ -1,7 +1,7 @@
 {
-  "name": "docket",
+  "name": "daydeck",
   "version": "1.0.0",
-  "description": "Obsidian Docket Plugin — cognitive task management dashboard",
+  "description": "Obsidian DayDeck Plugin — cognitive task management dashboard",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",

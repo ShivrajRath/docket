@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2026-07-15
 
 ### Added
-- Initial release of Docket plugin
+
+- Initial release of DayDeck plugin
 - Responsive section grid with drag-and-drop functionality
 - Smart capture with inline tagging support
 - Semantic tagging system with custom colors

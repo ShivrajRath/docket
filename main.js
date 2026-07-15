@@ -20,7 +20,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => DocketPlugin
+  default: () => DayDeckPlugin
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian4 = require("obsidian");
@@ -216,7 +216,7 @@ function normalizeBucketOrder(buckets) {
   });
 }
 
-// src/DocketView.ts
+// src/DayDeckView.ts
 var import_obsidian2 = require("obsidian");
 
 // src/DashboardTab.ts
@@ -1208,9 +1208,9 @@ var ArchiveTab = class {
   }
 };
 
-// src/DocketView.ts
-var VIEW_TYPE_DOCKET = "docket-view";
-var DocketView = class extends import_obsidian2.ItemView {
+// src/DayDeckView.ts
+var VIEW_TYPE_DAYDECK = "daydeck-view";
+var DayDeckView = class extends import_obsidian2.ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     // State
@@ -1222,10 +1222,10 @@ var DocketView = class extends import_obsidian2.ItemView {
   // ItemView overrides
   // -------------------------------------------------------------------------
   getViewType() {
-    return VIEW_TYPE_DOCKET;
+    return VIEW_TYPE_DAYDECK;
   }
   getDisplayText() {
-    return "Docket";
+    return "DayDeck";
   }
   getIcon() {
     return "folder-kanban";
@@ -1248,7 +1248,7 @@ var DocketView = class extends import_obsidian2.ItemView {
     const navLeft = this.navEl.createDiv("docket-nav-left");
     const brand = navLeft.createDiv("docket-brand");
     brand.createSpan({ cls: "docket-brand-icon", text: "\u{1F5C2}\uFE0F" });
-    brand.createSpan({ cls: "docket-brand-name", text: "Docket" });
+    brand.createSpan({ cls: "docket-brand-name", text: "DayDeck" });
     const tabGroup = navLeft.createDiv("docket-tab-group");
     const tabs = [
       { id: "dashboard", label: "Dashboard" },
@@ -1397,7 +1397,7 @@ var DocketView = class extends import_obsidian2.ItemView {
 
 // src/settings.ts
 var import_obsidian3 = require("obsidian");
-var DocketSettingTab = class extends import_obsidian3.PluginSettingTab {
+var DayDeckSettingTab = class extends import_obsidian3.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
@@ -1407,7 +1407,7 @@ var DocketSettingTab = class extends import_obsidian3.PluginSettingTab {
     containerEl.empty();
     containerEl.addClass("docket-settings");
     const header = containerEl.createDiv("docket-settings-header");
-    header.createEl("h2", { text: "\u{1F5C2}\uFE0F Docket" });
+    header.createEl("h2", { text: "\u{1F5C2}\uFE0F DayDeck" });
     header.createEl("p", {
       cls: "docket-settings-intro",
       text: "Configure your task containers and semantic tags. Changes apply immediately."
@@ -1653,49 +1653,49 @@ It will be removed from all tasks.`)) return;
 };
 
 // src/main.ts
-var DocketPlugin = class extends import_obsidian4.Plugin {
+var DayDeckPlugin = class extends import_obsidian4.Plugin {
   // -------------------------------------------------------------------------
   // Lifecycle
   // -------------------------------------------------------------------------
   async onload() {
     await this.loadSettings();
-    this.registerView(VIEW_TYPE_DOCKET, (leaf) => new DocketView(leaf, this));
-    this.addRibbonIcon("folder-kanban", "Open Docket", () => {
+    this.registerView(VIEW_TYPE_DAYDECK, (leaf) => new DayDeckView(leaf, this));
+    this.addRibbonIcon("folder-kanban", "Open DayDeck", () => {
       this.activateView();
     });
     this.addCommand({
-      id: "open-docket",
-      name: "Open Docket dashboard",
+      id: "open-daydeck",
+      name: "Open DayDeck dashboard",
       callback: () => {
         this.activateView();
       }
     });
-    this.addSettingTab(new DocketSettingTab(this.app, this));
+    this.addSettingTab(new DayDeckSettingTab(this.app, this));
     this.startReminderMonitor();
-    console.log("Docket: plugin loaded");
+    console.log("DayDeck: plugin loaded");
   }
   onunload() {
-    this.app.workspace.detachLeavesOfType(VIEW_TYPE_DOCKET);
+    this.app.workspace.detachLeavesOfType(VIEW_TYPE_DAYDECK);
     this.stopReminderMonitor();
-    console.log("Docket: plugin unloaded");
+    console.log("DayDeck: plugin unloaded");
   }
   // -------------------------------------------------------------------------
   // View management
   // -------------------------------------------------------------------------
   /**
-   * Open (or focus) the Docket view.
+   * Open (or focus) the DayDeck view.
    * If a leaf with the view already exists, reveal it.
    * Otherwise, open a new tab.
    */
   async activateView() {
     const { workspace } = this.app;
-    const existing = workspace.getLeavesOfType(VIEW_TYPE_DOCKET);
+    const existing = workspace.getLeavesOfType(VIEW_TYPE_DAYDECK);
     if (existing.length > 0) {
       workspace.revealLeaf(existing[0]);
       return;
     }
     const leaf = workspace.getLeaf("tab");
-    await leaf.setViewState({ type: VIEW_TYPE_DOCKET, active: true });
+    await leaf.setViewState({ type: VIEW_TYPE_DAYDECK, active: true });
     workspace.revealLeaf(leaf);
   }
   // -------------------------------------------------------------------------
@@ -1783,17 +1783,17 @@ var DocketPlugin = class extends import_obsidian4.Plugin {
     }
   }
   showReminderNotification(task) {
-    const title = "Docket reminder";
+    const title = "DayDeck reminder";
     const body = task.text;
     if (typeof window !== "undefined" && "Notification" in window) {
       if (window.Notification.permission === "granted") {
-        new window.Notification(title, { body, tag: `docket-reminder-${task.id}` });
+        new window.Notification(title, { body, tag: `daydeck-reminder-${task.id}` });
         return;
       }
       if (window.Notification.permission === "default") {
         window.Notification.requestPermission().then((permission) => {
           if (permission === "granted") {
-            new window.Notification(title, { body, tag: `docket-reminder-${task.id}` });
+            new window.Notification(title, { body, tag: `daydeck-reminder-${task.id}` });
           } else {
             new import_obsidian4.Notice(`${title}: ${body}`);
           }
@@ -1804,13 +1804,13 @@ var DocketPlugin = class extends import_obsidian4.Plugin {
     new import_obsidian4.Notice(`${title}: ${body}`);
   }
   /**
-   * Persist the current settings object and refresh any open Docket views.
+   * Persist the current settings object and refresh any open DayDeck views.
    */
   async saveSettings(skipRefresh = false) {
     await this.saveData(this.settings);
     if (!skipRefresh) {
-      this.app.workspace.getLeavesOfType(VIEW_TYPE_DOCKET).forEach((leaf) => {
-        if (leaf.view instanceof DocketView) {
+      this.app.workspace.getLeavesOfType(VIEW_TYPE_DAYDECK).forEach((leaf) => {
+        if (leaf.view instanceof DayDeckView) {
           leaf.view.refresh();
         }
       });

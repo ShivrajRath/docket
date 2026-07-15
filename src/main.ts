@@ -1,21 +1,21 @@
 /**
- * main.ts — Docket Plugin entry point.
+ * main.ts — DayDeck Plugin entry point.
  *
  * Responsibilities:
- *  - Register the custom ItemView (DocketView)
+ *  - Register the custom ItemView (DayDeckView)
  *  - Add ribbon icon + keyboard command
  *  - Register the PluginSettingTab
  *  - Load / save settings via Obsidian's built-in data API
  */
 
 import { Notice, Plugin, WorkspaceLeaf } from 'obsidian';
-import { DocketSettings, DEFAULT_SETTINGS, normalizeBucketOrder, Task } from './types';
-import { DocketView, VIEW_TYPE_DOCKET } from './DocketView';
-import { DocketSettingTab } from './settings';
+import { DayDeckSettings, DEFAULT_SETTINGS, normalizeBucketOrder, Task } from './types';
+import { DayDeckView, VIEW_TYPE_DAYDECK } from './DayDeckView';
+import { DayDeckSettingTab } from './settings';
 
-export default class DocketPlugin extends Plugin {
+export default class DayDeckPlugin extends Plugin {
   /** Live settings object — mutate then call saveSettings() to persist */
-  settings!: DocketSettings;
+  settings!: DayDeckSettings;
   private reminderIntervalId?: number;
 
   // -------------------------------------------------------------------------
@@ -27,36 +27,36 @@ export default class DocketPlugin extends Plugin {
     await this.loadSettings();
 
     // 2. Register the custom view type
-    this.registerView(VIEW_TYPE_DOCKET, (leaf: WorkspaceLeaf) => new DocketView(leaf, this));
+    this.registerView(VIEW_TYPE_DAYDECK, (leaf: WorkspaceLeaf) => new DayDeckView(leaf, this));
 
     // 3. Ribbon icon
-    this.addRibbonIcon('folder-kanban', 'Open Docket', () => {
+    this.addRibbonIcon('folder-kanban', 'Open DayDeck', () => {
       this.activateView();
     });
 
     // 4. Command palette entry
     this.addCommand({
-      id: 'open-docket',
-      name: 'Open Docket dashboard',
+      id: 'open-daydeck',
+      name: 'Open DayDeck dashboard',
       callback: () => {
         this.activateView();
       },
     });
 
     // 5. Settings tab
-    this.addSettingTab(new DocketSettingTab(this.app, this));
+    this.addSettingTab(new DayDeckSettingTab(this.app, this));
 
     // 6. Reminder monitor
     this.startReminderMonitor();
 
-    console.log('Docket: plugin loaded');
+    console.log('DayDeck: plugin loaded');
   }
 
   onunload(): void {
-    // Detach all open Docket leaves when plugin is disabled
-    this.app.workspace.detachLeavesOfType(VIEW_TYPE_DOCKET);
+    // Detach all open DayDeck leaves when plugin is disabled
+    this.app.workspace.detachLeavesOfType(VIEW_TYPE_DAYDECK);
     this.stopReminderMonitor();
-    console.log('Docket: plugin unloaded');
+    console.log('DayDeck: plugin unloaded');
   }
 
   // -------------------------------------------------------------------------
@@ -64,7 +64,7 @@ export default class DocketPlugin extends Plugin {
   // -------------------------------------------------------------------------
 
   /**
-   * Open (or focus) the Docket view.
+   * Open (or focus) the DayDeck view.
    * If a leaf with the view already exists, reveal it.
    * Otherwise, open a new tab.
    */
@@ -72,7 +72,7 @@ export default class DocketPlugin extends Plugin {
     const { workspace } = this.app;
 
     // Check if already open
-    const existing = workspace.getLeavesOfType(VIEW_TYPE_DOCKET);
+    const existing = workspace.getLeavesOfType(VIEW_TYPE_DAYDECK);
     if (existing.length > 0) {
       workspace.revealLeaf(existing[0]);
       return;
@@ -80,7 +80,7 @@ export default class DocketPlugin extends Plugin {
 
     // Open in a new tab
     const leaf = workspace.getLeaf('tab');
-    await leaf.setViewState({ type: VIEW_TYPE_DOCKET, active: true });
+    await leaf.setViewState({ type: VIEW_TYPE_DAYDECK, active: true });
     workspace.revealLeaf(leaf);
   }
 
@@ -93,7 +93,7 @@ export default class DocketPlugin extends Plugin {
    * schema additions in future versions without data loss.
    */
   async loadSettings(): Promise<void> {
-    const saved = (await this.loadData()) as Partial<DocketSettings> | null;
+    const saved = (await this.loadData()) as Partial<DayDeckSettings> | null;
 
     this.settings = {
       ...DEFAULT_SETTINGS,
@@ -185,19 +185,19 @@ export default class DocketPlugin extends Plugin {
   }
 
   private showReminderNotification(task: Task): void {
-    const title = 'Docket reminder';
+    const title = 'DayDeck reminder';
     const body = task.text;
 
     if (typeof window !== 'undefined' && 'Notification' in window) {
       if (window.Notification.permission === 'granted') {
-        new window.Notification(title, { body, tag: `docket-reminder-${task.id}` });
+        new window.Notification(title, { body, tag: `daydeck-reminder-${task.id}` });
         return;
       }
 
       if (window.Notification.permission === 'default') {
         window.Notification.requestPermission().then((permission) => {
           if (permission === 'granted') {
-            new window.Notification(title, { body, tag: `docket-reminder-${task.id}` });
+            new window.Notification(title, { body, tag: `daydeck-reminder-${task.id}` });
           } else {
             new Notice(`${title}: ${body}`);
           }
@@ -210,15 +210,15 @@ export default class DocketPlugin extends Plugin {
   }
 
   /**
-   * Persist the current settings object and refresh any open Docket views.
+   * Persist the current settings object and refresh any open DayDeck views.
    */
   async saveSettings(skipRefresh = false): Promise<void> {
     await this.saveData(this.settings);
 
     if (!skipRefresh) {
-      // Refresh all open Docket view instances
-      this.app.workspace.getLeavesOfType(VIEW_TYPE_DOCKET).forEach((leaf) => {
-        if (leaf.view instanceof DocketView) {
+      // Refresh all open DayDeck view instances
+      this.app.workspace.getLeavesOfType(VIEW_TYPE_DAYDECK).forEach((leaf) => {
+        if (leaf.view instanceof DayDeckView) {
           leaf.view.refresh();
         }
       });
