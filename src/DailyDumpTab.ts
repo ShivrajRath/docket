@@ -161,7 +161,9 @@ export class DailyDumpTab {
   }
 
   private commitEditIfNeeded(): void {
-    const editor = this.previewEl?.querySelector('.docket-scratchpad-editor') as HTMLTextAreaElement | null;
+    const editor = this.previewEl?.querySelector(
+      '.docket-scratchpad-editor',
+    ) as HTMLTextAreaElement | null;
     if (editor && this.isEditing) {
       this.plugin.settings.dailyDumps[this.selectedDate] = editor.value;
       this.isEditing = false;
@@ -180,7 +182,9 @@ export class DailyDumpTab {
     syncBtn.addEventListener('click', async () => {
       await this.syncToDaily();
       syncBtn.textContent = 'Synced ✓';
-      setTimeout(() => { syncBtn.textContent = 'Sync to daily note'; }, 2000);
+      setTimeout(() => {
+        syncBtn.textContent = 'Sync to daily note';
+      }, 2000);
     });
   }
 
@@ -198,7 +202,7 @@ export class DailyDumpTab {
         if (existing.includes('## 🗂️ Docket Dump')) {
           const updated = existing.replace(
             /## 🗂️ Docket Dump[\s\S]*?(?=\n## |\n---|$)/,
-            `## 🗂️ Docket Dump\n\n${content}\n`
+            `## 🗂️ Docket Dump\n\n${content}\n`,
           );
           await this.app.vault.modify(file, updated);
         } else {

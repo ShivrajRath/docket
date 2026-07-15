@@ -5,9 +5,16 @@
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
-    "build": "tsc --noEmit -p tsconfig.json && node esbuild.config.mjs production"
+    "build": "tsc --noEmit -p tsconfig.json && node esbuild.config.mjs production",
+    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix",
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
-  "keywords": ["obsidian", "tasks", "productivity"],
+  "keywords": [
+    "obsidian",
+    "tasks",
+    "productivity"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
@@ -16,6 +23,22 @@
     "esbuild": "0.21.5",
     "obsidian": "latest",
     "tslib": "2.6.2",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "prettier": "^2.8.8",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,jsx,json,css,md}": [
+      "prettier --write"
+    ],
+    "*.{js,ts,tsx,jsx}": [
+      "eslint --fix"
+    ]
   }
 }

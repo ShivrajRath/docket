@@ -5,6 +5,6 @@
   "minAppVersion": "1.4.0",
   "description": "A cognitive task management dashboard with semantic tagging, focus modes, and frictionless capture.",
   "author": "Docket",
-  "authorUrl": "https://github.com/docket-obsidian",
+  "authorUrl": "https://github.com/ShivrajRath/docket",
   "isDesktopOnly": false
 }

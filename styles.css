@@ -84,9 +84,7 @@
   color: var(--text-muted);
   cursor: pointer;
   white-space: nowrap;
-  transition:
-    color 0.15s,
-    background-color 0.15s;
+  transition: color 0.15s, background-color 0.15s;
   user-select: none;
 }
 
@@ -145,15 +143,14 @@
 
 .docket-quick-capture {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
   padding: 10px 20px;
   background-color: var(--background-primary);
   border-bottom: 1px solid var(--background-modifier-border);
   flex-shrink: 0;
-  transition:
-    opacity 0.2s,
-    max-height 0.2s;
+  transition: opacity 0.2s, max-height 0.2s;
 }
 
 .docket-quick-capture.is-hidden {
@@ -161,17 +158,15 @@
 }
 
 .docket-qc-input-wrapper {
-  flex: 1;
   display: flex;
   align-items: center;
   gap: 8px;
+  width: 100%;
   background-color: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
   border-radius: 7px;
   padding: 0 14px;
-  transition:
-    border-color 0.15s,
-    box-shadow 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .docket-qc-input-wrapper:focus-within {
@@ -186,7 +181,7 @@
 }
 
 .docket-qc-input {
-  flex: 1;
+  width: 100%;
   background: transparent;
   border: none;
   outline: none;
@@ -256,9 +251,7 @@
   opacity: 0.7;
   padding: 0 2px;
   border-radius: 50%;
-  transition:
-    opacity 0.15s,
-    background-color 0.15s;
+  transition: opacity 0.15s, background-color 0.15s;
 }
 
 .docket-tag-filter-remove:hover {
@@ -325,15 +318,12 @@
 .docket-bucket {
   background-color: var(--background-secondary);
   border: 1px solid var(--background-modifier-border);
-  border-top: 2px solid
-    var(--docket-bucket-color, var(--background-modifier-border));
+  border-top: 2px solid var(--docket-bucket-color, var(--background-modifier-border));
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   height: 420px;
   min-width: 0;
 }
@@ -460,9 +450,7 @@
   color: var(--text-faint);
   padding: 8px 14px;
   cursor: pointer;
-  transition:
-    color 0.15s,
-    background-color 0.15s;
+  transition: color 0.15s, background-color 0.15s;
   border-top: 1px solid var(--background-modifier-border);
 }
 
@@ -503,17 +491,11 @@
   gap: 6px;
   cursor: grab;
   position: relative;
-  transition:
-    transform 0.12s,
-    border-color 0.15s,
-    box-shadow 0.15s;
+  transition: transform 0.12s, border-color 0.15s, box-shadow 0.15s;
 }
 
 .docket-task-card:hover {
-  border-color: var(
-    --background-modifier-border-hover,
-    var(--interactive-accent)
-  );
+  border-color: var(--background-modifier-border-hover, var(--interactive-accent));
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
@@ -524,7 +506,7 @@
 
 /* Colour indicator strip on the left edge */
 .docket-task-card.has-indicator::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0;
@@ -546,9 +528,7 @@
   opacity: 0.12;
   filter: grayscale(1);
   pointer-events: none;
-  transition:
-    opacity 0.3s,
-    filter 0.3s;
+  transition: opacity 0.3s, filter 0.3s;
 }
 
 .docket-task-card.is-focus-highlight {
@@ -571,25 +551,22 @@
 
 .docket-task-main {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 9px;
 }
 
 .docket-task-checkbox {
-  margin-top: 2px;
   flex-shrink: 0;
   appearance: none;
   -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border: 1.5px solid var(--checkbox-border-color, var(--text-muted));
   border-radius: 3px;
   cursor: pointer;
   display: grid;
   place-content: center;
-  transition:
-    border-color 0.15s,
-    background-color 0.15s;
+  transition: border-color 0.15s, background-color 0.15s;
 }
 
 .docket-task-checkbox:hover {
@@ -602,7 +579,7 @@
 }
 
 .docket-task-checkbox:checked::before {
-  content: "";
+  content: '';
   display: block;
   width: 8px;
   height: 5px;
@@ -628,9 +605,7 @@
   cursor: pointer;
   flex-shrink: 0;
   opacity: 0;
-  transition:
-    opacity 0.15s,
-    color 0.15s;
+  transition: opacity 0.15s, color 0.15s;
   padding: 0 2px;
 }
 
@@ -661,11 +636,7 @@
   padding: 2px 7px;
   border-radius: 4px;
   color: var(--docket-tag-color, var(--text-muted));
-  background-color: color-mix(
-    in srgb,
-    var(--docket-tag-color, var(--text-muted)) 14%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--docket-tag-color, var(--text-muted)) 14%, transparent);
   white-space: nowrap;
 }
 
@@ -892,9 +863,7 @@
   border-radius: 4px;
   background: var(--background-modifier-hover);
   color: var(--text-muted);
-  transition:
-    color 0.15s,
-    background-color 0.15s;
+  transition: color 0.15s, background-color 0.15s;
 }
 .docket-scratchpad-toggle:hover {
   color: var(--interactive-accent);
@@ -940,7 +909,7 @@
 }
 
 /* Style checkboxes in markdown preview */
-.docket-scratchpad-preview input[type="checkbox"] {
+.docket-scratchpad-preview input[type='checkbox'] {
   margin-right: 6px;
   cursor: pointer;
 }
@@ -1231,7 +1200,7 @@
 }
 
 .docket-archive-card.has-indicator::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0;

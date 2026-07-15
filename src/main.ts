@@ -26,10 +26,7 @@ export default class DocketPlugin extends Plugin {
     await this.loadSettings();
 
     // 2. Register the custom view type
-    this.registerView(
-      VIEW_TYPE_DOCKET,
-      (leaf: WorkspaceLeaf) => new DocketView(leaf, this)
-    );
+    this.registerView(VIEW_TYPE_DOCKET, (leaf: WorkspaceLeaf) => new DocketView(leaf, this));
 
     // 3. Ribbon icon
     this.addRibbonIcon('inbox', 'Open Docket', () => {
@@ -103,7 +100,7 @@ export default class DocketPlugin extends Plugin {
       this.settings.buckets = DEFAULT_SETTINGS.buckets;
     } else {
       // Migrate legacy two-column ordering into a single global order
-      const hasLegacyColumns = this.settings.buckets.some(b => b.column !== undefined);
+      const hasLegacyColumns = this.settings.buckets.some((b) => b.column !== undefined);
       if (hasLegacyColumns) {
         this.settings.buckets.sort((a, b) => {
           const colA = a.column ?? 1;
@@ -114,7 +111,7 @@ export default class DocketPlugin extends Plugin {
         normalizeBucketOrder(this.settings.buckets);
       }
       // Migrate buckets without showCounter field
-      this.settings.buckets.forEach(bucket => {
+      this.settings.buckets.forEach((bucket) => {
         if (bucket.showCounter === undefined) {
           bucket.showCounter = bucket.id === 'waiting';
         }
@@ -131,7 +128,7 @@ export default class DocketPlugin extends Plugin {
     }
 
     // Automatically ensure the Deep Work tag exists (Bug Bash requirement)
-    if (!this.settings.tags.some(t => t.id === this.settings.deepWorkTagId)) {
+    if (!this.settings.tags.some((t) => t.id === this.settings.deepWorkTagId)) {
       this.settings.tags.push({
         id: this.settings.deepWorkTagId,
         name: 'DeepWork',
@@ -148,7 +145,7 @@ export default class DocketPlugin extends Plugin {
 
     if (!skipRefresh) {
       // Refresh all open Docket view instances
-      this.app.workspace.getLeavesOfType(VIEW_TYPE_DOCKET).forEach(leaf => {
+      this.app.workspace.getLeavesOfType(VIEW_TYPE_DOCKET).forEach((leaf) => {
         if (leaf.view instanceof DocketView) {
           leaf.view.refresh();
         }

@@ -36,6 +36,7 @@ Docket ensures you never lose sight of the big picture while staying focused on 
 ## 🛠️ Installation
 
 1.  **Build the Plugin**:
+
     - Make sure you have Node.js and npm installed.
     - Run `npm install` to fetch dependencies.
     - Run `npm run dev` for continuous development mode.

@@ -50,10 +50,7 @@ export class DocketSettingTab extends PluginSettingTab {
       text: '+ Add Section',
     });
     addBtn.addEventListener('click', async () => {
-      const maxOrder = this.plugin.settings.buckets.reduce(
-        (max, b) => Math.max(max, b.order),
-        -1
-      );
+      const maxOrder = this.plugin.settings.buckets.reduce((max, b) => Math.max(max, b.order), -1);
       this.plugin.settings.buckets.push({
         id: generateId(),
         name: 'New Section',
@@ -71,7 +68,7 @@ export class DocketSettingTab extends PluginSettingTab {
     container.empty();
 
     const headerRow = container.createDiv('docket-settings-row docket-settings-header-row');
-    ['Icon', 'Name', 'Color', 'Counter', 'Actions'].forEach(label => {
+    ['Icon', 'Name', 'Color', 'Counter', 'Actions'].forEach((label) => {
       headerRow.createDiv({ cls: 'docket-settings-cell', text: label });
     });
 
@@ -177,10 +174,16 @@ export class DocketSettingTab extends PluginSettingTab {
         text: 'Delete',
       });
       delBtn.addEventListener('click', async () => {
-        if (!confirm(`Delete section "${bucket.name}"?\n\nTasks inside will remain but won't appear on the Dashboard until assigned to another section.`)) {
+        if (
+          !confirm(
+            `Delete section "${bucket.name}"?\n\nTasks inside will remain but won't appear on the Dashboard until assigned to another section.`,
+          )
+        ) {
           return;
         }
-        this.plugin.settings.buckets = this.plugin.settings.buckets.filter(b => b.id !== bucket.id);
+        this.plugin.settings.buckets = this.plugin.settings.buckets.filter(
+          (b) => b.id !== bucket.id,
+        );
         normalizeBucketOrder(this.plugin.settings.buckets);
         await this.plugin.saveSettings();
         this.display();
@@ -220,11 +223,11 @@ export class DocketSettingTab extends PluginSettingTab {
     container.empty();
 
     const headerRow = container.createDiv('docket-settings-row docket-settings-header-row');
-    ['Name', 'Color', 'Preview', 'Actions'].forEach(label => {
+    ['Name', 'Color', 'Preview', 'Actions'].forEach((label) => {
       headerRow.createDiv({ cls: 'docket-settings-cell', text: label });
     });
 
-    this.plugin.settings.tags.forEach(tag => {
+    this.plugin.settings.tags.forEach((tag) => {
       const row = container.createDiv('docket-settings-row');
 
       const nameCell = row.createDiv('docket-settings-cell');
@@ -266,7 +269,10 @@ export class DocketSettingTab extends PluginSettingTab {
       });
 
       const previewCell = row.createDiv('docket-settings-cell');
-      const previewPill = previewCell.createSpan({ cls: 'docket-inline-tag', text: `#${tag.name}` });
+      const previewPill = previewCell.createSpan({
+        cls: 'docket-inline-tag',
+        text: `#${tag.name}`,
+      });
       previewPill.style.setProperty('--docket-tag-color', tag.color);
 
       const actCell = row.createDiv('docket-settings-cell');
@@ -277,9 +283,9 @@ export class DocketSettingTab extends PluginSettingTab {
       });
       delBtn.addEventListener('click', async () => {
         if (!confirm(`Delete tag #${tag.name}?\n\nIt will be removed from all tasks.`)) return;
-        this.plugin.settings.tags = this.plugin.settings.tags.filter(t => t.id !== tag.id);
-        this.plugin.settings.tasks.forEach(task => {
-          task.tags = task.tags.filter(id => id !== tag.id);
+        this.plugin.settings.tags = this.plugin.settings.tags.filter((t) => t.id !== tag.id);
+        this.plugin.settings.tasks.forEach((task) => {
+          task.tags = task.tags.filter((id) => id !== tag.id);
         });
         if (this.plugin.settings.deepWorkTagId === tag.id) {
           this.plugin.settings.deepWorkTagId = this.plugin.settings.tags[0]?.id ?? '';

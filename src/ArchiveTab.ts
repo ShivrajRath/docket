@@ -67,7 +67,7 @@ export class ArchiveTab {
     searchInput.value = this.searchQuery;
 
     // Stats
-    const completed = this.plugin.settings.tasks.filter(t => t.isCompleted);
+    const completed = this.plugin.settings.tasks.filter((t) => t.isCompleted);
     controls.createDiv({
       cls: 'docket-archive-stats',
       text: `${completed.length} completed task${completed.length !== 1 ? 's' : ''}`,
@@ -98,8 +98,8 @@ export class ArchiveTab {
     wrapper.empty();
 
     const completed = this.plugin.settings.tasks
-      .filter(t => t.isCompleted)
-      .filter(t => t.text.toLowerCase().includes(this.searchQuery.toLowerCase()))
+      .filter((t) => t.isCompleted)
+      .filter((t) => t.text.toLowerCase().includes(this.searchQuery.toLowerCase()))
       .sort((a, b) => (b.completedAt ?? 0) - (a.completedAt ?? 0));
 
     if (completed.length === 0) {
@@ -120,7 +120,7 @@ export class ArchiveTab {
       group.createDiv({ cls: 'docket-archive-group-label', text: label });
 
       const list = group.createDiv('docket-archive-list');
-      tasks.forEach(task => this.renderArchivedTask(task, list));
+      tasks.forEach((task) => this.renderArchivedTask(task, list));
     });
   }
 
@@ -134,7 +134,7 @@ export class ArchiveTab {
     const card = parent.createDiv('docket-archive-card');
 
     // Colour indicator from first tag
-    const firstTag = task.tags.length > 0 ? tags.find(t => t.id === task.tags[0]) : null;
+    const firstTag = task.tags.length > 0 ? tags.find((t) => t.id === task.tags[0]) : null;
     if (firstTag) {
       card.style.setProperty('--docket-indicator-color', firstTag.color);
       card.addClass('has-indicator');
@@ -162,7 +162,7 @@ export class ArchiveTab {
       task.completedAt = undefined;
 
       // Return to Today bucket if it exists, else keep current bucketId
-      const todayBucket = this.plugin.settings.buckets.find(b => b.id === 'today');
+      const todayBucket = this.plugin.settings.buckets.find((b) => b.id === 'today');
       if (todayBucket) task.bucketId = todayBucket.id;
 
       task.createdAt = Date.now(); // treat as a fresh task
@@ -174,8 +174,8 @@ export class ArchiveTab {
     if (hasTagsOrDate) {
       const meta = card.createDiv('docket-task-tag-row');
 
-      task.tags.forEach(tagId => {
-        const tag = tags.find(t => t.id === tagId);
+      task.tags.forEach((tagId) => {
+        const tag = tags.find((t) => t.id === tagId);
         if (!tag) return;
         const pill = meta.createSpan({ cls: 'docket-inline-tag', text: `#${tag.name}` });
         pill.style.setProperty('--docket-tag-color', tag.color);
@@ -200,7 +200,7 @@ export class ArchiveTab {
   private groupByMonth(tasks: Task[]): Array<{ label: string; tasks: Task[] }> {
     const map = new Map<string, Task[]>();
 
-    tasks.forEach(task => {
+    tasks.forEach((task) => {
       const date = task.completedAt ? new Date(task.completedAt) : new Date(task.createdAt);
       const label = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
       if (!map.has(label)) map.set(label, []);

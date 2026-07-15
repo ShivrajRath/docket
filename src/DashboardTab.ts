@@ -11,7 +11,15 @@
 
 import { Menu, Modal, Setting } from 'obsidian';
 import DocketPlugin from './main';
-import { Task, Bucket, Tag, generateId, parseTaskInput, formatWaitingTime, normalizeBucketOrder } from './types';
+import {
+  Task,
+  Bucket,
+  Tag,
+  generateId,
+  parseTaskInput,
+  formatWaitingTime,
+  normalizeBucketOrder,
+} from './types';
 
 let _draggedTaskId: string | null = null;
 let _draggedBucketId: string | null = null;
@@ -31,7 +39,7 @@ export class DashboardTab {
     const grid = inner.createDiv('docket-bucket-grid');
 
     const sorted = [...this.plugin.settings.buckets].sort((a, b) => a.order - b.order);
-    sorted.forEach(bucket => this.renderBucket(bucket, grid));
+    sorted.forEach((bucket) => this.renderBucket(bucket, grid));
 
     const addSectionBtn = inner.createDiv({ cls: 'docket-add-section-btn', text: '+ Add Section' });
     addSectionBtn.addEventListener('click', async () => {
@@ -58,7 +66,11 @@ export class DashboardTab {
     const header = bucketEl.createDiv('docket-bucket-header');
     header.draggable = true;
 
-    header.createSpan({ cls: 'docket-bucket-drag-handle', text: '⠿', attr: { title: 'Drag to reorder section' } });
+    header.createSpan({
+      cls: 'docket-bucket-drag-handle',
+      text: '⠿',
+      attr: { title: 'Drag to reorder section' },
+    });
 
     const titleEl = header.createDiv('docket-bucket-title');
     titleEl.createSpan({ cls: 'docket-bucket-icon', text: bucket.icon });
@@ -67,17 +79,31 @@ export class DashboardTab {
     const rightActions = header.createDiv('docket-bucket-header-right');
     rightActions.createSpan({ cls: 'docket-bucket-count', text: String(tasks.length) });
 
-    const editBtn = rightActions.createSpan({ cls: 'docket-bucket-edit', text: '✏️', attr: { title: 'Edit section' } });
+    const editBtn = rightActions.createSpan({
+      cls: 'docket-bucket-edit',
+      text: '✏️',
+      attr: { title: 'Edit section' },
+    });
     editBtn.addEventListener('click', (e: MouseEvent) => {
       e.stopPropagation();
       this.showBucketEditModal(bucket);
     });
 
-    const delBtn = rightActions.createSpan({ cls: 'docket-bucket-delete', text: '🗑️', attr: { title: 'Delete section' } });
+    const delBtn = rightActions.createSpan({
+      cls: 'docket-bucket-delete',
+      text: '🗑️',
+      attr: { title: 'Delete section' },
+    });
     delBtn.addEventListener('click', async (e: MouseEvent) => {
       e.stopPropagation();
-      if (confirm(`Delete section "${bucket.name}"? Tasks inside will remain but won't appear on the Dashboard.`)) {
-        this.plugin.settings.buckets = this.plugin.settings.buckets.filter(b => b.id !== bucket.id);
+      if (
+        confirm(
+          `Delete section "${bucket.name}"? Tasks inside will remain but won't appear on the Dashboard.`,
+        )
+      ) {
+        this.plugin.settings.buckets = this.plugin.settings.buckets.filter(
+          (b) => b.id !== bucket.id,
+        );
         normalizeBucketOrder(this.plugin.settings.buckets);
         await this.plugin.saveSettings();
       }
@@ -87,19 +113,31 @@ export class DashboardTab {
 
     const taskList = bucketEl.createDiv('docket-task-list');
     taskList.dataset.bucketId = bucket.id;
-    this.setupDropZone(taskList, bucket.id, rightActions.querySelector('.docket-bucket-count') as HTMLElement);
+    this.setupDropZone(
+      taskList,
+      bucket.id,
+      rightActions.querySelector('.docket-bucket-count') as HTMLElement,
+    );
 
-    taskList.addEventListener('click', e => {
+    taskList.addEventListener('click', (e) => {
       if (e.target === taskList) {
-        this.spawnInlineCapture(taskList, bucket.id, rightActions.querySelector('.docket-bucket-count') as HTMLElement);
+        this.spawnInlineCapture(
+          taskList,
+          bucket.id,
+          rightActions.querySelector('.docket-bucket-count') as HTMLElement,
+        );
       }
     });
 
-    tasks.forEach(task => this.renderTaskCard(task, taskList, bucket.id));
+    tasks.forEach((task) => this.renderTaskCard(task, taskList, bucket.id));
 
     const addBtn = bucketEl.createDiv({ cls: 'docket-add-task-btn', text: '+ Add task' });
     addBtn.addEventListener('click', () => {
-      this.spawnInlineCapture(taskList, bucket.id, rightActions.querySelector('.docket-bucket-count') as HTMLElement);
+      this.spawnInlineCapture(
+        taskList,
+        bucket.id,
+        rightActions.querySelector('.docket-bucket-count') as HTMLElement,
+      );
     });
   }
 
@@ -118,7 +156,7 @@ export class DashboardTab {
     header.addEventListener('dragend', () => {
       bucketEl.removeClass('docket-bucket-dragging');
       _draggedBucketId = null;
-      this.container.querySelectorAll('.docket-bucket-drop-target').forEach(el => {
+      this.container.querySelectorAll('.docket-bucket-drop-target').forEach((el) => {
         el.removeClass('docket-bucket-drop-target');
       });
     });
@@ -144,13 +182,15 @@ export class DashboardTab {
       if (!sourceId || sourceId === bucketId) return;
 
       const buckets = [...this.plugin.settings.buckets].sort((a, b) => a.order - b.order);
-      const sourceIdx = buckets.findIndex(b => b.id === sourceId);
-      const targetIdx = buckets.findIndex(b => b.id === bucketId);
+      const sourceIdx = buckets.findIndex((b) => b.id === sourceId);
+      const targetIdx = buckets.findIndex((b) => b.id === bucketId);
       if (sourceIdx < 0 || targetIdx < 0) return;
 
       const [moved] = buckets.splice(sourceIdx, 1);
       buckets.splice(targetIdx, 0, moved);
-      buckets.forEach((b, i) => { b.order = i; });
+      buckets.forEach((b, i) => {
+        b.order = i;
+      });
 
       await this.plugin.saveSettings();
     });
@@ -158,14 +198,14 @@ export class DashboardTab {
 
   private renderTaskCard(task: Task, parent: HTMLElement, bucketId: string): HTMLElement {
     const { tags, buckets } = this.plugin.settings;
-    const bucket = buckets.find(b => b.id === bucketId);
+    const bucket = buckets.find((b) => b.id === bucketId);
     const showCounter = bucket?.showCounter ?? false;
 
     const card = parent.createDiv('docket-task-card');
     card.dataset.taskId = task.id;
     card.draggable = true;
 
-    const firstTag = task.tags.length > 0 ? tags.find(t => t.id === task.tags[0]) : null;
+    const firstTag = task.tags.length > 0 ? tags.find((t) => t.id === task.tags[0]) : null;
     if (firstTag) {
       card.style.setProperty('--docket-indicator-color', firstTag.color);
       card.addClass('has-indicator');
@@ -247,7 +287,11 @@ export class DashboardTab {
 
     const reminderBtn = taskMain.createSpan({
       cls: 'docket-task-reminder',
-      attr: { title: task.reminderAt ? `Reminder: ${this.formatReminderLabel(task.reminderAt)}` : 'Set reminder' },
+      attr: {
+        title: task.reminderAt
+          ? `Reminder: ${this.formatReminderLabel(task.reminderAt)}`
+          : 'Set reminder',
+      },
       text: task.reminderAt ? '🔔' : '🔕',
     });
     if (task.reminderAt) {
@@ -259,17 +303,21 @@ export class DashboardTab {
       this.showReminderModal(task);
     });
 
-    const delBtn = taskMain.createSpan({ cls: 'docket-task-delete', attr: { title: 'Delete task' }, text: '×' });
-    delBtn.addEventListener('click', async e => {
+    const delBtn = taskMain.createSpan({
+      cls: 'docket-task-delete',
+      attr: { title: 'Delete task' },
+      text: '×',
+    });
+    delBtn.addEventListener('click', async (e) => {
       e.stopPropagation();
-      this.plugin.settings.tasks = this.plugin.settings.tasks.filter(t => t.id !== task.id);
+      this.plugin.settings.tasks = this.plugin.settings.tasks.filter((t) => t.id !== task.id);
       await this.plugin.saveSettings();
     });
 
     const metaRow = card.createDiv('docket-task-tag-row');
 
-    task.tags.forEach(tagId => {
-      const tag = tags.find(t => t.id === tagId);
+    task.tags.forEach((tagId) => {
+      const tag = tags.find((t) => t.id === tagId);
       if (!tag) return;
       const pill = metaRow.createSpan({ cls: 'docket-inline-tag', text: `#${tag.name}` });
       pill.style.setProperty('--docket-tag-color', tag.color);
@@ -277,7 +325,7 @@ export class DashboardTab {
       const removeTag = pill.createSpan({ cls: 'docket-inline-tag-remove', text: '×' });
       removeTag.addEventListener('click', async (e: MouseEvent) => {
         e.stopPropagation();
-        task.tags = task.tags.filter(id => id !== tagId);
+        task.tags = task.tags.filter((id) => id !== tagId);
         await this.plugin.saveSettings();
       });
     });
@@ -297,7 +345,7 @@ export class DashboardTab {
       });
     }
 
-    card.addEventListener('contextmenu', e => {
+    card.addEventListener('contextmenu', (e) => {
       e.preventDefault();
       this.showTaskContextMenu(e as MouseEvent, task);
     });
@@ -324,7 +372,12 @@ export class DashboardTab {
     const time = date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 
     if (isToday) return `Today ${time}`;
-    return date.toLocaleDateString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    return date.toLocaleDateString([], {
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+    });
   }
 
   private showReminderModal(task: Task): void {
@@ -356,7 +409,7 @@ export class DashboardTab {
       const taskId = e.dataTransfer!.getData('text/plain') || _draggedTaskId;
       if (!taskId) return;
 
-      const task = this.plugin.settings.tasks.find(t => t.id === taskId);
+      const task = this.plugin.settings.tasks.find((t) => t.id === taskId);
       if (!task) return;
 
       if (task.bucketId !== bucketId) {
@@ -365,16 +418,18 @@ export class DashboardTab {
       task.bucketId = bucketId;
 
       const visibleCards = Array.from(
-        taskList.querySelectorAll<HTMLElement>('.docket-task-card:not(.docket-dragging)')
+        taskList.querySelectorAll<HTMLElement>('.docket-task-card:not(.docket-dragging)'),
       );
       const dropIndex = this.getDropIndex(visibleCards, e.clientY);
 
       const bucketTasks = this.plugin.settings.tasks
-        .filter(t => t.bucketId === bucketId && t.id !== taskId && !t.isCompleted)
+        .filter((t) => t.bucketId === bucketId && t.id !== taskId && !t.isCompleted)
         .sort((a, b) => a.order - b.order);
 
       bucketTasks.splice(dropIndex, 0, task);
-      bucketTasks.forEach((t, i) => { t.order = i; });
+      bucketTasks.forEach((t, i) => {
+        t.order = i;
+      });
 
       countEl.textContent = String(this.getActiveTasks(bucketId).length);
 
@@ -393,7 +448,7 @@ export class DashboardTab {
   private updateDropIndicator(taskList: HTMLElement, mouseY: number): void {
     this.removeDropIndicator(taskList);
     const cards = Array.from(
-      taskList.querySelectorAll<HTMLElement>('.docket-task-card:not(.docket-dragging)')
+      taskList.querySelectorAll<HTMLElement>('.docket-task-card:not(.docket-dragging)'),
     );
     const idx = this.getDropIndex(cards, mouseY);
     const indicator = createEl('div', { cls: 'docket-drop-indicator' });
@@ -405,14 +460,10 @@ export class DashboardTab {
   }
 
   private removeDropIndicator(taskList: HTMLElement): void {
-    taskList.querySelectorAll('.docket-drop-indicator').forEach(el => el.remove());
+    taskList.querySelectorAll('.docket-drop-indicator').forEach((el) => el.remove());
   }
 
-  private spawnInlineCapture(
-    taskList: HTMLElement,
-    bucketId: string,
-    countEl: HTMLElement
-  ): void {
+  private spawnInlineCapture(taskList: HTMLElement, bucketId: string, countEl: HTMLElement): void {
     if (taskList.querySelector('.docket-inline-capture')) return;
 
     const input = taskList.createEl('input', {
@@ -433,8 +484,8 @@ export class DashboardTab {
         filteredTags = this.plugin.settings.tags;
       } else {
         const lowerQuery = query.toLowerCase();
-        filteredTags = this.plugin.settings.tags.filter(t =>
-          t.name.toLowerCase().includes(lowerQuery)
+        filteredTags = this.plugin.settings.tags.filter((t) =>
+          t.name.toLowerCase().includes(lowerQuery),
         );
       }
 
@@ -528,7 +579,8 @@ export class DashboardTab {
           const textAfter = input.value.substring(cursorPos);
           const lastHashIndex = textBefore.lastIndexOf('#');
           if (lastHashIndex !== -1) {
-            const newText = textBefore.substring(0, lastHashIndex) + `#${selectedTag.name} ` + textAfter;
+            const newText =
+              textBefore.substring(0, lastHashIndex) + `#${selectedTag.name} ` + textAfter;
             input.value = newText;
             input.focus();
             input.setSelectionRange(newText.length, newText.length);
@@ -542,7 +594,10 @@ export class DashboardTab {
         }
       }
 
-      if (e.key === 'Enter') { e.preventDefault(); await commit(); }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        await commit();
+      }
       if (e.key === 'Escape') {
         committed = true;
         hideSuggestions();
@@ -574,7 +629,7 @@ export class DashboardTab {
       }
 
       const existing = this.getActiveTasks(bucketId);
-      const maxOrder = existing.length > 0 ? Math.max(...existing.map(t => t.order)) : -1;
+      const maxOrder = existing.length > 0 ? Math.max(...existing.map((t) => t.order)) : -1;
 
       this.plugin.settings.tasks.push({
         id: generateId(),
@@ -594,73 +649,75 @@ export class DashboardTab {
   private showTaskContextMenu(e: MouseEvent, task: Task): void {
     const menu = new Menu();
 
-    const otherBuckets = this.plugin.settings.buckets.filter(b => b.id !== task.bucketId);
+    const otherBuckets = this.plugin.settings.buckets.filter((b) => b.id !== task.bucketId);
     if (otherBuckets.length > 0) {
-      otherBuckets.sort((a, b) => a.order - b.order).forEach(bucket => {
-        menu.addItem(item =>
-          item
-            .setTitle(`Move to ${bucket.icon} ${bucket.name}`)
-            .setIcon('arrow-right')
-            .onClick(async () => {
-              if (task.bucketId !== bucket.id) {
-                task.bucketUpdatedAt = Date.now();
-              }
-              task.bucketId = bucket.id;
-              await this.plugin.saveSettings();
-            })
-        );
-      });
+      otherBuckets
+        .sort((a, b) => a.order - b.order)
+        .forEach((bucket) => {
+          menu.addItem((item) =>
+            item
+              .setTitle(`Move to ${bucket.icon} ${bucket.name}`)
+              .setIcon('arrow-right')
+              .onClick(async () => {
+                if (task.bucketId !== bucket.id) {
+                  task.bucketUpdatedAt = Date.now();
+                }
+                task.bucketId = bucket.id;
+                await this.plugin.saveSettings();
+              }),
+          );
+        });
       menu.addSeparator();
     }
 
-    menu.addItem(item =>
+    menu.addItem((item) =>
       item
         .setTitle(task.reminderAt ? 'Edit reminder' : 'Set reminder')
         .setIcon('bell')
-        .onClick(() => this.showReminderModal(task))
+        .onClick(() => this.showReminderModal(task)),
     );
 
     if (task.reminderAt) {
-      menu.addItem(item =>
+      menu.addItem((item) =>
         item
           .setTitle('Clear reminder')
           .setIcon('bell-off')
           .onClick(async () => {
             task.reminderAt = undefined;
             await this.plugin.saveSettings();
-          })
+          }),
       );
     }
 
     menu.addSeparator();
 
-    this.plugin.settings.tags.forEach(tag => {
+    this.plugin.settings.tags.forEach((tag) => {
       const hasTag = task.tags.includes(tag.id);
-      menu.addItem(item =>
+      menu.addItem((item) =>
         item
           .setTitle(`${hasTag ? '✓ ' : ''}#${tag.name}`)
           .setIcon(hasTag ? 'check' : 'tag')
           .onClick(async () => {
             if (hasTag) {
-              task.tags = task.tags.filter(id => id !== tag.id);
+              task.tags = task.tags.filter((id) => id !== tag.id);
             } else {
               task.tags = [...task.tags, tag.id];
             }
             await this.plugin.saveSettings();
-          })
+          }),
       );
     });
 
     menu.addSeparator();
 
-    menu.addItem(item =>
+    menu.addItem((item) =>
       item
         .setTitle('Delete task')
         .setIcon('trash')
         .onClick(async () => {
-          this.plugin.settings.tasks = this.plugin.settings.tasks.filter(t => t.id !== task.id);
+          this.plugin.settings.tasks = this.plugin.settings.tasks.filter((t) => t.id !== task.id);
           await this.plugin.saveSettings();
-        })
+        }),
     );
 
     menu.showAtMouseEvent(e);
@@ -668,16 +725,16 @@ export class DashboardTab {
 
   applyTagFilter(activeTagIds: string[]): void {
     const cards = this.container.querySelectorAll<HTMLElement>('.docket-task-card');
-    cards.forEach(card => {
+    cards.forEach((card) => {
       const taskId = card.dataset.taskId;
-      const task = this.plugin.settings.tasks.find(t => t.id === taskId);
+      const task = this.plugin.settings.tasks.find((t) => t.id === taskId);
 
       if (!task || activeTagIds.length === 0) {
         card.removeClass('is-filtered-out');
         return;
       }
 
-      const matches = activeTagIds.some(id => task.tags.includes(id));
+      const matches = activeTagIds.some((id) => task.tags.includes(id));
       card.classList.toggle('is-filtered-out', !matches);
     });
   }
@@ -685,9 +742,9 @@ export class DashboardTab {
   applySearchFilter(query: string): void {
     const q = query.toLowerCase();
     const cards = this.container.querySelectorAll<HTMLElement>('.docket-task-card');
-    cards.forEach(card => {
+    cards.forEach((card) => {
       const taskId = card.dataset.taskId;
-      const task = this.plugin.settings.tasks.find(t => t.id === taskId);
+      const task = this.plugin.settings.tasks.find((t) => t.id === taskId);
 
       if (!task || !q) {
         card.removeClass('is-search-hidden');
@@ -701,7 +758,7 @@ export class DashboardTab {
 
   private getActiveTasks(bucketId: string): Task[] {
     return this.plugin.settings.tasks
-      .filter(t => t.bucketId === bucketId && !t.isCompleted)
+      .filter((t) => t.bucketId === bucketId && !t.isCompleted)
       .sort((a, b) => a.order - b.order);
   }
 }
@@ -726,27 +783,25 @@ class BucketEditModal extends Modal {
     new Setting(contentEl)
       .setName('Icon')
       .setDesc('Emoji or short text icon')
-      .addText(text => {
-        text.setValue(this.bucket.icon).onChange(async value => {
+      .addText((text) => {
+        text.setValue(this.bucket.icon).onChange(async (value) => {
           this.bucket.icon = value || '📌';
           await this.plugin.saveSettings();
         });
       });
 
-    new Setting(contentEl)
-      .setName('Name')
-      .addText(text => {
-        text.setValue(this.bucket.name).onChange(async value => {
-          this.bucket.name = value.trim() || 'Section';
-          await this.plugin.saveSettings();
-        });
+    new Setting(contentEl).setName('Name').addText((text) => {
+      text.setValue(this.bucket.name).onChange(async (value) => {
+        this.bucket.name = value.trim() || 'Section';
+        await this.plugin.saveSettings();
       });
+    });
 
     new Setting(contentEl)
       .setName('Color')
       .setDesc('Accent color for the section header')
-      .addColorPicker(picker => {
-        picker.setValue(this.bucket.color).onChange(async value => {
+      .addColorPicker((picker) => {
+        picker.setValue(this.bucket.color).onChange(async (value) => {
           this.bucket.color = value;
           await this.plugin.saveSettings();
         });
@@ -779,43 +834,44 @@ class ReminderModal extends Modal {
       text: this.task.text,
     });
 
-    const existing = this.task.reminderAt ? new Date(this.task.reminderAt) : new Date(Date.now() + 3600000);
+    const existing = this.task.reminderAt
+      ? new Date(this.task.reminderAt)
+      : new Date(Date.now() + 3600000);
     const dateStr = existing.toISOString().slice(0, 10);
     const timeStr = existing.toTimeString().slice(0, 5);
 
     let selectedDate = dateStr;
     let selectedTime = timeStr;
 
-    new Setting(contentEl)
-      .setName('Date')
-      .addText(text => {
-        text.inputEl.type = 'date';
-        text.setValue(dateStr).onChange(value => {
-          selectedDate = value;
-        });
+    new Setting(contentEl).setName('Date').addText((text) => {
+      text.inputEl.type = 'date';
+      text.setValue(dateStr).onChange((value) => {
+        selectedDate = value;
       });
+    });
+
+    new Setting(contentEl).setName('Time').addText((text) => {
+      text.inputEl.type = 'time';
+      text.setValue(timeStr).onChange((value) => {
+        selectedTime = value;
+      });
+    });
 
     new Setting(contentEl)
-      .setName('Time')
-      .addText(text => {
-        text.inputEl.type = 'time';
-        text.setValue(timeStr).onChange(value => {
-          selectedTime = value;
-        });
-      });
-
-    new Setting(contentEl)
-      .addButton(btn => {
-        btn.setButtonText('Save reminder').setCta().onClick(async () => {
-          const reminderAt = new Date(`${selectedDate}T${selectedTime}`).getTime();
-          if (!Number.isNaN(reminderAt)) {
-            this.task.reminderAt = reminderAt;
-            await this.plugin.saveSettings();
-          }
-          this.close();
-        });
+      .addButton((btn) => {
+        btn
+          .setButtonText('Save reminder')
+          .setCta()
+          .onClick(async () => {
+            const reminderAt = new Date(`${selectedDate}T${selectedTime}`).getTime();
+            if (!Number.isNaN(reminderAt)) {
+              this.task.reminderAt = reminderAt;
+              await this.plugin.saveSettings();
+            }
+            this.close();
+          });
       })
-      .addButton(btn => {
+      .addButton((btn) => {
         btn.setButtonText('Clear').onClick(async () => {
           this.task.reminderAt = undefined;
           await this.plugin.saveSettings();

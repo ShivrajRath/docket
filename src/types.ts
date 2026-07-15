@@ -94,7 +94,14 @@ export const DEFAULT_BUCKETS: Bucket[] = [
   { id: 'today', name: 'Today', icon: '🔥', color: '#f14c4c', order: 0, showCounter: false },
   { id: 'next', name: 'Next', icon: '⏭️', color: '#d7ba7d', order: 1, showCounter: false },
   { id: 'waiting', name: 'Waiting', icon: '🤝', color: '#c586c0', order: 2, showCounter: true },
-  { id: 'focus-hub', name: 'Focus Hub', icon: '🧠', color: '#b4befe', order: 3, showCounter: false },
+  {
+    id: 'focus-hub',
+    name: 'Focus Hub',
+    icon: '🧠',
+    color: '#b4befe',
+    order: 3,
+    showCounter: false,
+  },
   { id: 'learning', name: 'Learning', icon: '📚', color: '#4ec9b0', order: 4, showCounter: false },
   { id: 'ideas', name: 'Ideas', icon: '💡', color: '#ce9178', order: 5, showCounter: false },
   { id: 'watch', name: 'Watch', icon: '🔍', color: '#4fc1ff', order: 6, showCounter: false },
@@ -163,10 +170,13 @@ export function startOfDay(date: Date): number {
  */
 export function parseTaskInput(
   input: string,
-  tags: Tag[]
+  tags: Tag[],
 ): { text: string; tagIds: ID[]; newTags: string[] } {
   // Remove tags from the text but leave the rest of the string intact
-  const text = input.replace(/#([A-Za-z0-9_-]+)/g, '').replace(/\s+/g, ' ').trim();
+  const text = input
+    .replace(/#([A-Za-z0-9_-]+)/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 
   const tagIds: ID[] = [];
   const newTags: string[] = [];
@@ -176,7 +186,7 @@ export function parseTaskInput(
     for (const match of matches) {
       const tagName = match.slice(1);
       const lowerName = tagName.toLowerCase();
-      const existingTag = tags.find(t => t.name.toLowerCase() === lowerName);
+      const existingTag = tags.find((t) => t.name.toLowerCase() === lowerName);
 
       if (existingTag) {
         if (!tagIds.includes(existingTag.id)) {

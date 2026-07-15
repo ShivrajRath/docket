@@ -89,9 +89,9 @@ export class DocketView extends ItemView {
 
     const tabGroup = navLeft.createDiv('docket-tab-group');
     const tabs: Array<{ id: TabName; label: string }> = [
-      { id: 'dashboard',  label: 'Dashboard'  },
+      { id: 'dashboard', label: 'Dashboard' },
       { id: 'daily-dump', label: 'Daily Dump' },
-      { id: 'archive',    label: 'Archive'    },
+      { id: 'archive', label: 'Archive' },
     ];
 
     tabs.forEach(({ id, label }) => {
@@ -143,13 +143,22 @@ export class DocketView extends ItemView {
   private buildContent(): void {
     const contentArea = this.contentEl.createDiv('docket-content');
 
-    this.dashboardPanel = contentArea.createDiv({ cls: 'docket-tab-panel', attr: { 'data-panel': 'dashboard' } });
+    this.dashboardPanel = contentArea.createDiv({
+      cls: 'docket-tab-panel',
+      attr: { 'data-panel': 'dashboard' },
+    });
     this.dashboardTab = new DashboardTab(this.dashboardPanel, this.plugin);
 
-    this.dailyDumpPanel = contentArea.createDiv({ cls: 'docket-tab-panel', attr: { 'data-panel': 'daily-dump' } });
+    this.dailyDumpPanel = contentArea.createDiv({
+      cls: 'docket-tab-panel',
+      attr: { 'data-panel': 'daily-dump' },
+    });
     this.dailyDumpTab = new DailyDumpTab(this.dailyDumpPanel, this.plugin);
 
-    this.archivePanel = contentArea.createDiv({ cls: 'docket-tab-panel', attr: { 'data-panel': 'archive' } });
+    this.archivePanel = contentArea.createDiv({
+      cls: 'docket-tab-panel',
+      attr: { 'data-panel': 'archive' },
+    });
     this.archiveTab = new ArchiveTab(this.archivePanel, this.plugin);
   }
 
@@ -160,13 +169,13 @@ export class DocketView extends ItemView {
   switchToTab(tab: TabName): void {
     this.currentTab = tab;
 
-    this.navEl.querySelectorAll('.docket-nav-tab').forEach(el => {
+    this.navEl.querySelectorAll('.docket-nav-tab').forEach((el) => {
       el.classList.toggle('is-active', (el as HTMLElement).dataset.tab === tab);
     });
 
     this.quickCaptureEl.classList.toggle('is-hidden', tab !== 'dashboard');
 
-    [this.dashboardPanel, this.dailyDumpPanel, this.archivePanel].forEach(p => {
+    [this.dashboardPanel, this.dailyDumpPanel, this.archivePanel].forEach((p) => {
       p.classList.remove('is-active');
     });
 
@@ -211,7 +220,7 @@ export class DocketView extends ItemView {
       this.dashboardTab?.applyTagFilter([]);
     });
 
-    this.plugin.settings.tags.forEach(tag => {
+    this.plugin.settings.tags.forEach((tag) => {
       const isActive = this.activeTagFilters.includes(tag.id);
       const pill = this.tagPillsContainer.createDiv({
         cls: 'docket-tag-filter-pill',
@@ -247,7 +256,7 @@ export class DocketView extends ItemView {
   }
 
   private removeTagFilter(tagId: string): void {
-    this.activeTagFilters = this.activeTagFilters.filter(id => id !== tagId);
+    this.activeTagFilters = this.activeTagFilters.filter((id) => id !== tagId);
     this.renderTagPills();
     this.dashboardTab?.applyTagFilter(this.activeTagFilters);
   }
