@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "minAppVersion": "1.4.0",
   "description": "A task manager for organizing your work.",
-  "author": "Docket",
+  "author": "Shivraj Rath",
   "authorUrl": "https://github.com/ShivrajRath/docket",
   "fundingUrl": "https://ko-fi.com/raths",
   "isDesktopOnly": false

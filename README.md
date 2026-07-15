@@ -15,7 +15,7 @@ Docket ensures you never lose sight of the big picture while staying focused on 
 
 ---
 
-## � Quick Start
+## 🚀 Quick Start
 
 1. **Install Docket** from the Obsidian Community Plugins store
 2. **Open Docket** via the ribbon icon or `Ctrl+P` → "Open Docket dashboard"
