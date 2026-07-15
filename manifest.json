@@ -1,0 +1,10 @@
+{
+  "id": "docket",
+  "name": "Docket",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "A cognitive task management dashboard with semantic tagging, focus modes, and frictionless capture.",
+  "author": "Docket",
+  "authorUrl": "https://github.com/docket-obsidian",
+  "isDesktopOnly": false
+}

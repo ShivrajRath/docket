@@ -1,0 +1,1600 @@
+/* =============================================================================
+   styles.css — Docket Plugin Styles
+   
+   ALL colours use Obsidian CSS variables so the plugin works perfectly in
+   both Light and Dark mode out-of-the-box. User-configurable bucket and tag
+   colours are injected via inline CSS custom properties set in TypeScript.
+   ============================================================================= */
+
+/* =============================================================================
+   RESET & ROOT
+   ============================================================================= */
+
+.docket-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-interface);
+  background-color: var(--background-primary);
+  color: var(--text-normal);
+}
+
+/* =============================================================================
+   TOP NAVIGATION BAR
+   ============================================================================= */
+
+.docket-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--background-secondary);
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding: 0 16px;
+  height: 46px;
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.docket-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.docket-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.docket-brand-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.docket-brand-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-normal);
+  letter-spacing: -0.3px;
+}
+
+/* ── Tab Group ──────────────────────────────────────────────────────────────── */
+
+.docket-tab-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.docket-tab-group::-webkit-scrollbar {
+  display: none;
+}
+
+.docket-nav-tab {
+  padding: 5px 11px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color 0.15s,
+    background-color 0.15s;
+  user-select: none;
+}
+
+.docket-nav-tab:hover {
+  color: var(--text-normal);
+  background-color: var(--background-modifier-hover);
+}
+
+.docket-nav-tab.is-active {
+  color: var(--interactive-accent);
+  background-color: rgba(var(--interactive-accent-rgb, 0 122 255) / 0.12);
+  font-weight: 600;
+}
+
+/* ── Deep Work Mode Button ───────────────────────────────────────────────────── */
+
+.docket-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.docket-focus-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border-radius: 5px;
+  border: 1px dashed var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.docket-focus-btn:hover {
+  border-color: var(--interactive-accent);
+  color: var(--interactive-accent);
+  background-color: rgba(var(--interactive-accent-rgb, 0 122 255) / 0.08);
+}
+
+.docket-focus-btn.is-active {
+  background-color: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+  border-style: solid;
+  color: #fff;
+}
+
+/* =============================================================================
+   QUICK CAPTURE BAR
+   ============================================================================= */
+
+.docket-quick-capture {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background-color: var(--background-primary);
+  border-bottom: 1px solid var(--background-modifier-border);
+  flex-shrink: 0;
+  transition:
+    opacity 0.2s,
+    max-height 0.2s;
+}
+
+.docket-quick-capture.is-hidden {
+  display: none;
+}
+
+.docket-qc-input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 7px;
+  padding: 0 14px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.docket-qc-input-wrapper:focus-within {
+  border-color: var(--interactive-accent);
+  box-shadow: 0 0 0 2px rgba(var(--interactive-accent-rgb, 0 122 255) / 0.15);
+}
+
+.docket-qc-icon {
+  font-size: 14px;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.docket-qc-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 9px 0;
+  font-size: 13.5px;
+  color: var(--text-normal);
+  min-width: 0;
+}
+
+.docket-qc-input::placeholder {
+  color: var(--text-faint);
+}
+
+.docket-qc-tag-filters {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.docket-qc-tag-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.docket-tag-filter-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid var(--background-modifier-border);
+  background-color: var(--background-secondary);
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.docket-tag-filter-pill:hover {
+  color: var(--color, var(--docket-pill-color, var(--interactive-accent)));
+  border-color: currentColor;
+  background-color: var(--background-modifier-hover);
+}
+
+.docket-tag-filter-pill.is-active {
+  color: var(--docket-pill-color, var(--interactive-accent));
+  border-color: var(--docket-pill-color, var(--interactive-accent));
+  background-color: color-mix(
+    in srgb,
+    var(--docket-pill-color, var(--interactive-accent)) 12%,
+    transparent
+  );
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.docket-tag-filter-label {
+  pointer-events: none;
+}
+
+.docket-tag-filter-remove {
+  font-size: 13px;
+  line-height: 1;
+  opacity: 0.7;
+  padding: 0 2px;
+  border-radius: 50%;
+  transition:
+    opacity 0.15s,
+    background-color 0.15s;
+}
+
+.docket-tag-filter-remove:hover {
+  opacity: 1;
+  background-color: rgba(var(--mono-rgb-100, 255 255 255) / 0.1);
+}
+
+.docket-tag-filter-all {
+  color: var(--text-muted);
+}
+
+.docket-tag-filter-all.is-active {
+  color: var(--text-normal);
+  border-color: var(--text-muted);
+  background-color: var(--background-modifier-hover);
+}
+
+/* =============================================================================
+   CONTENT AREA & TAB PANELS
+   ============================================================================= */
+
+.docket-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.docket-tab-panel {
+  display: none;
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.docket-tab-panel.is-active {
+  display: block;
+}
+
+/* =============================================================================
+   DASHBOARD — Responsive grid layout
+   ============================================================================= */
+
+.docket-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+.docket-bucket-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+/* =============================================================================
+   BUCKET
+   ============================================================================= */
+
+.docket-bucket {
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-top: 2px solid
+    var(--docket-bucket-color, var(--background-modifier-border));
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  height: 420px;
+  min-width: 0;
+}
+
+.docket-bucket.docket-bucket-dragging {
+  opacity: 0.5;
+}
+
+.docket-bucket.docket-bucket-drop-target {
+  box-shadow: 0 0 0 2px var(--interactive-accent);
+}
+
+.docket-bucket-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  background-color: rgba(var(--mono-rgb-0, 0 0 0) / 0.02);
+  cursor: grab;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.docket-bucket-header:active {
+  cursor: grabbing;
+}
+
+.docket-bucket-drag-handle {
+  font-size: 14px;
+  color: var(--text-faint);
+  margin-right: 6px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.docket-bucket-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.docket-bucket-edit,
+.docket-bucket-delete {
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-size: 14px;
+}
+
+.docket-bucket-header:hover .docket-bucket-edit,
+.docket-bucket-header:hover .docket-bucket-delete {
+  opacity: 0.7;
+}
+
+.docket-bucket-edit:hover,
+.docket-bucket-delete:hover {
+  opacity: 1;
+}
+
+.docket-bucket-name-edit {
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--interactive-accent);
+  border-radius: 4px;
+  padding: 1px 4px;
+  outline: none;
+  background: var(--background-primary);
+  color: var(--text-normal);
+}
+
+.docket-bucket-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-normal);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.docket-bucket-icon {
+  font-size: 14px;
+}
+
+.docket-bucket-count {
+  font-size: 11px;
+  font-weight: 600;
+  background-color: var(--background-primary);
+  color: var(--text-muted);
+  padding: 1px 7px;
+  border-radius: 10px;
+  min-width: 22px;
+  text-align: center;
+}
+
+/* Task list drop zone */
+.docket-task-list {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-height: 48px;
+  flex: 1;
+  overflow-y: auto;
+  transition: background-color 0.15s;
+}
+
+.docket-task-list.docket-drag-over {
+  background-color: rgba(var(--interactive-accent-rgb, 0 122 255) / 0.06);
+}
+
+/* Drop indicator line */
+.docket-drop-indicator {
+  height: 2px;
+  border-radius: 1px;
+  background-color: var(--interactive-accent);
+  margin: 2px 0;
+  opacity: 0.8;
+}
+
+/* Add task button */
+.docket-add-task-btn {
+  font-size: 12px;
+  color: var(--text-faint);
+  padding: 8px 14px;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    background-color 0.15s;
+  border-top: 1px solid var(--background-modifier-border);
+}
+
+.docket-add-task-btn:hover {
+  color: var(--interactive-accent);
+  background-color: rgba(var(--interactive-accent-rgb, 0 122 255) / 0.06);
+}
+
+/* Add Section button */
+.docket-add-section-btn {
+  text-align: center;
+  padding: 10px;
+  border: 1px dashed var(--background-modifier-border);
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.docket-add-section-btn:hover {
+  color: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+  background: rgba(var(--interactive-accent-rgb, 0 122 255) / 0.05);
+}
+
+/* =============================================================================
+   TASK CARD
+   ============================================================================= */
+
+.docket-task-card {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: grab;
+  position: relative;
+  transition:
+    transform 0.12s,
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.docket-task-card:hover {
+  border-color: var(
+    --background-modifier-border-hover,
+    var(--interactive-accent)
+  );
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.docket-task-card:active {
+  cursor: grabbing;
+}
+
+/* Colour indicator strip on the left edge */
+.docket-task-card.has-indicator::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  background-color: var(--docket-indicator-color, transparent);
+}
+
+/* Dragging ghost */
+.docket-task-card.docket-dragging {
+  opacity: 0.4;
+  transform: scale(0.98);
+}
+
+/* Focus mode states */
+.docket-task-card.is-focus-dim {
+  opacity: 0.12;
+  filter: grayscale(1);
+  pointer-events: none;
+  transition:
+    opacity 0.3s,
+    filter 0.3s;
+}
+
+.docket-task-card.is-focus-highlight {
+  box-shadow: 0 0 0 1.5px var(--interactive-accent);
+}
+
+/* Tag filter fade-out */
+.docket-task-card.is-filtered-out {
+  opacity: 0.15;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+/* Search filter hidden */
+.docket-task-card.is-search-hidden {
+  display: none !important;
+}
+
+/* ── Task main row ────────────────────────────────────────────────────────── */
+
+.docket-task-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.docket-task-checkbox {
+  margin-top: 2px;
+  flex-shrink: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--checkbox-border-color, var(--text-muted));
+  border-radius: 3px;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  transition:
+    border-color 0.15s,
+    background-color 0.15s;
+}
+
+.docket-task-checkbox:hover {
+  border-color: var(--interactive-accent);
+}
+
+.docket-task-checkbox:checked {
+  background-color: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+}
+
+.docket-task-checkbox:checked::before {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 5px;
+  border-left: 1.5px solid #fff;
+  border-bottom: 1.5px solid #fff;
+  transform: translateY(-1px) rotate(-45deg);
+}
+
+.docket-task-text {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-normal);
+  min-width: 0;
+  word-break: break-word;
+}
+
+/* Delete × button (hidden until card hover) */
+.docket-task-delete {
+  font-size: 16px;
+  line-height: 1;
+  color: var(--text-faint);
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0;
+  transition:
+    opacity 0.15s,
+    color 0.15s;
+  padding: 0 2px;
+}
+
+.docket-task-card:hover .docket-task-delete {
+  opacity: 1;
+}
+
+.docket-task-delete:hover {
+  color: var(--text-error, #f14c4c);
+}
+
+/* ── Tag pills on task card ────────────────────────────────────────────────── */
+
+.docket-task-tag-row {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-left: 23px;
+  align-items: center;
+}
+
+.docket-inline-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: var(--docket-tag-color, var(--text-muted));
+  background-color: color-mix(
+    in srgb,
+    var(--docket-tag-color, var(--text-muted)) 14%,
+    transparent
+  );
+  white-space: nowrap;
+}
+
+.docket-inline-tag-remove {
+  font-size: 11px;
+  line-height: 1;
+  opacity: 0.6;
+  cursor: pointer;
+  padding: 0 1px;
+  border-radius: 2px;
+}
+
+.docket-inline-tag-remove:hover {
+  opacity: 1;
+  background-color: rgba(var(--mono-rgb-100, 255 255 255) / 0.15);
+}
+
+.docket-inline-tag.is-deep-work-pill {
+  border: 1px solid var(--docket-tag-color, var(--interactive-accent));
+}
+
+.docket-waiting-time {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background-color: var(--background-modifier-hover);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.docket-task-reminder {
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0.35;
+  transition: opacity 0.15s;
+}
+
+.docket-task-card:hover .docket-task-reminder {
+  opacity: 0.7;
+}
+
+.docket-task-reminder.has-reminder {
+  opacity: 0.85;
+}
+
+.docket-task-reminder.has-reminder.is-overdue {
+  opacity: 1;
+  filter: saturate(1.5);
+}
+
+.docket-reminder-label {
+  font-size: 10px;
+  color: var(--interactive-accent);
+  font-weight: 600;
+}
+
+/* ── Inline capture input ────────────────────────────────────────────────── */
+
+.docket-inline-capture {
+  width: 100%;
+  background-color: var(--background-primary);
+  border: 1px solid var(--interactive-accent);
+  border-radius: 5px;
+  padding: 7px 10px;
+  font-size: 13px;
+  color: var(--text-normal);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--interactive-accent-rgb, 0 122 255) / 0.15);
+}
+
+/* ── Inline task editing ─────────────────────────────────────────────────── */
+
+.docket-task-edit-input {
+  flex: 1;
+  background-color: var(--background-primary);
+  border: 1px solid var(--interactive-accent);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text-normal);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--interactive-accent-rgb, 0 122 255) / 0.15);
+  margin: -3px -7px;
+}
+
+/* ── Tag suggestions dropdown ─────────────────────────────────────────────── */
+
+.docket-tag-suggestions {
+  position: absolute;
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 4px;
+  margin-top: 4px;
+  width: 200px;
+}
+
+.docket-tag-suggestion-item {
+  padding: 6px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: var(--docket-tag-color, var(--text-muted));
+  transition: background-color 0.15s;
+  white-space: nowrap;
+}
+
+.docket-tag-suggestion-item:hover,
+.docket-tag-suggestion-item.is-selected {
+  background-color: var(--background-modifier-hover);
+  color: var(--docket-tag-color, var(--text-normal));
+}
+
+/* =============================================================================
+   DAILY DUMP TAB
+   ============================================================================= */
+
+.docket-daily-dump {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Date Selector ──────────────────────────────────────────────────────── */
+
+.docket-date-selector-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  flex-shrink: 0;
+}
+
+.docket-date-input {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 5px;
+  padding: 6px 10px;
+  font-size: 14px;
+  color: var(--text-normal);
+  font-family: var(--font-interface);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.docket-date-input:focus,
+.docket-date-input:hover {
+  border-color: var(--interactive-accent);
+}
+
+.docket-cal-today-btn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--interactive-accent);
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 5px;
+  border: 1px solid var(--background-modifier-border);
+  background-color: var(--background-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.docket-cal-today-btn:hover {
+  background-color: rgba(var(--interactive-accent-rgb, 0 122 255) / 0.1);
+  border-color: var(--interactive-accent);
+}
+
+/* ── Scratchpad Layout ───────────────────────────────────────────────────── */
+
+.docket-scratchpad-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.docket-scratchpad-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 0;
+  min-height: calc(100vh - 200px);
+}
+
+.docket-scratchpad-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  flex-shrink: 0;
+}
+
+.docket-scratchpad-date {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.docket-scratchpad-toggle {
+  font-size: 11px;
+  cursor: pointer;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--background-modifier-hover);
+  color: var(--text-muted);
+  transition:
+    color 0.15s,
+    background-color 0.15s;
+}
+.docket-scratchpad-toggle:hover {
+  color: var(--interactive-accent);
+  background-color: rgba(var(--interactive-accent-rgb, 0 122 255) / 0.1);
+}
+
+.docket-autosave-label {
+  font-size: 11px;
+  color: var(--text-faint);
+  transition: color 0.2s;
+}
+
+.docket-autosave-label.is-saving {
+  color: var(--interactive-accent);
+}
+
+.docket-scratchpad-editor {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 18px 24px;
+  color: var(--text-normal);
+  font-family: var(--font-text);
+  font-size: 14px;
+  line-height: 1.65;
+  resize: none;
+  min-height: 300px;
+  box-sizing: border-box;
+}
+
+.docket-scratchpad-preview {
+  flex: 1;
+  padding: 18px 24px;
+  color: var(--text-normal);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-y: auto;
+  cursor: text;
+  min-height: 300px;
+}
+
+/* Style checkboxes in markdown preview */
+.docket-scratchpad-preview input[type="checkbox"] {
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.docket-scratchpad-preview ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.docket-scratchpad-preview li {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 4px 0;
+}
+
+.docket-scratchpad-preview li.task-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.docket-scratchpad-preview.docket-scratchpad-editing {
+  padding: 0;
+  cursor: default;
+}
+
+.docket-scratchpad-placeholder {
+  color: var(--text-faint);
+  font-style: italic;
+  padding: 4px 0;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
+
+.docket-scratchpad-sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+/* ── Carryover Box ───────────────────────────────────────────────────────── */
+
+.docket-carryover-box {
+  background-color: rgba(241, 76, 76, 0.04);
+  border: 1px dashed rgba(241, 76, 76, 0.3);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.docket-carryover-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f14c4c;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.docket-carryover-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.docket-carryover-empty {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 12px 0;
+}
+
+.docket-carryover-task {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 5px;
+  padding: 9px 11px;
+  margin-bottom: 7px;
+}
+
+.docket-carryover-task-text {
+  font-size: 12px;
+  color: var(--text-normal);
+  line-height: 1.4;
+  display: block;
+  margin-bottom: 7px;
+}
+
+.docket-carryover-actions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.docket-carryover-btn {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: var(--background-modifier-hover);
+  color: var(--text-muted);
+  border: 1px solid var(--background-modifier-border);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.docket-carryover-btn:hover {
+  color: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+  background-color: rgba(var(--interactive-accent-rgb, 0 122 255) / 0.08);
+}
+
+.docket-carryover-btn--archive:hover {
+  color: var(--text-muted);
+  border-color: var(--text-muted);
+  background-color: var(--background-modifier-hover);
+}
+
+/* ── Sync Status Box ─────────────────────────────────────────────────────── */
+
+.docket-sync-box {
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.docket-sync-btn {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--interactive-accent);
+  color: var(--interactive-accent);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  width: fit-content;
+}
+
+.docket-sync-btn:hover {
+  background-color: rgba(var(--interactive-accent-rgb, 0 122 255) / 0.1);
+}
+
+/* =============================================================================
+   ARCHIVE TAB
+   ============================================================================= */
+
+.docket-archive {
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.docket-archive-header {
+  border-bottom: 1px solid var(--background-modifier-border);
+  padding-bottom: 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.docket-archive-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-normal);
+  margin: 0;
+}
+
+.docket-archive-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.docket-archive-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  margin-bottom: 18px;
+}
+
+.docket-archive-search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 0 12px;
+  flex: 1;
+  max-width: 340px;
+  transition: border-color 0.15s;
+}
+
+.docket-archive-search-wrapper:focus-within {
+  border-color: var(--interactive-accent);
+}
+
+.docket-archive-search-icon {
+  font-size: 13px;
+  opacity: 0.5;
+}
+
+.docket-archive-search {
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 8px 0;
+  font-size: 13px;
+  color: var(--text-normal);
+  width: 100%;
+}
+
+.docket-archive-search::placeholder {
+  color: var(--text-faint);
+}
+
+.docket-archive-stats {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.docket-archive-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.docket-archive-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.docket-archive-group-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-faint);
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.docket-archive-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.docket-archive-empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ── Archive Card ─────────────────────────────────────────────────────────── */
+
+.docket-archive-card {
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  padding: 11px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  opacity: 0.65;
+  position: relative;
+  transition: opacity 0.15s;
+}
+
+.docket-archive-card:hover {
+  opacity: 1;
+}
+
+.docket-archive-card.has-indicator::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  background-color: var(--docket-indicator-color, transparent);
+}
+
+/* Strike-through text in archive */
+.docket-archive-card .docket-task-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* Disabled checkbox */
+.docket-archive-card .docket-task-checkbox {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Restore button */
+.docket-restore-btn {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid var(--background-modifier-border);
+  color: var(--text-muted);
+  background: var(--background-primary);
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: all 0.15s;
+  opacity: 0;
+  white-space: nowrap;
+}
+
+.docket-archive-card:hover .docket-restore-btn {
+  opacity: 1;
+}
+
+.docket-restore-btn:hover {
+  color: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+  background-color: rgba(var(--interactive-accent-rgb, 0 122 255) / 0.08);
+}
+
+.docket-archive-done-date {
+  font-size: 10px;
+  color: var(--text-faint);
+  margin-left: auto;
+}
+
+/* =============================================================================
+   SETTINGS TAB
+   ============================================================================= */
+
+.docket-settings {
+  padding: 0 !important;
+}
+
+.docket-settings-header {
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  margin-bottom: 0;
+}
+
+.docket-settings-header h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.docket-settings-intro {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.docket-settings-section {
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.docket-settings-section:last-child {
+  border-bottom: none;
+}
+
+.docket-settings-section-header h3 {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+
+.docket-settings-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+}
+
+/* Table layout */
+.docket-settings-table-wrapper {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.docket-settings-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 80px 60px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.docket-settings-row:last-child {
+  border-bottom: none;
+}
+
+.docket-settings-header-row {
+  background-color: var(--background-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+/* Tags table has different columns */
+.docket-settings-section:nth-child(3) .docket-settings-row {
+  grid-template-columns: 1fr 60px 100px 80px;
+}
+
+.docket-settings-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.docket-settings-icon-input {
+  width: 44px;
+  text-align: center;
+  font-size: 15px;
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 4px;
+  color: var(--text-normal);
+  outline: none;
+}
+
+.docket-settings-text-input {
+  width: 100%;
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 13px;
+  color: var(--text-normal);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.docket-settings-text-input:focus {
+  border-color: var(--interactive-accent);
+}
+
+.docket-color-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.docket-color-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1px solid var(--background-modifier-border);
+  flex-shrink: 0;
+}
+
+.docket-settings-color-input {
+  width: 36px;
+  height: 24px;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 1px;
+  background-color: var(--background-primary);
+  cursor: pointer;
+}
+
+.docket-settings-select {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--text-normal);
+  outline: none;
+  width: 100%;
+  cursor: pointer;
+}
+
+.docket-settings-actions {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.docket-icon-btn {
+  background: transparent;
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 12px;
+  transition: all 0.15s;
+}
+
+.docket-icon-btn:hover:not(:disabled) {
+  background-color: var(--background-modifier-hover);
+  color: var(--text-normal);
+}
+
+.docket-icon-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.docket-del-btn {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.docket-add-btn {
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* =============================================================================
+   RESPONSIVE — Mobile (≤ 768px)
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  /* Nav: allow horizontal scroll for tabs */
+  .docket-nav {
+    padding: 0 10px;
+    gap: 8px;
+  }
+
+  .docket-nav-left {
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .docket-nav-left::-webkit-scrollbar {
+    display: none;
+  }
+
+  .docket-brand-name {
+    display: none; /* hide text, keep icon */
+  }
+
+  .docket-focus-btn {
+    padding: 4px 8px;
+  }
+
+  .docket-focus-btn-label {
+    display: none; /* show only 🧠 on mobile */
+  }
+
+  /* Quick capture: stack vertically */
+  .docket-quick-capture {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .docket-qc-tag-filters {
+    justify-content: flex-start;
+  }
+
+  /* Dashboard: single column on small screens */
+  .docket-bucket-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .docket-bucket {
+    height: 360px;
+  }
+
+  .docket-dashboard {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  /* Daily Dump: full width */
+  .docket-scratchpad-main {
+    min-height: calc(100vh - 180px);
+  }
+
+  /* Archive: full width */
+  .docket-archive-search-wrapper {
+    max-width: none;
+  }
+}
+
+/* =============================================================================
+   RESPONSIVE — Very small screens (≤ 480px)
+   ============================================================================= */
+
+@media (max-width: 480px) {
+  .docket-nav-tab {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .docket-cal-days {
+    gap: 3px;
+  }
+
+  .docket-cal-day {
+    width: 38px;
+  }
+
+  .docket-cal-date {
+    font-size: 14px;
+  }
+}
+
+/* =============================================================================
+   SCROLLBAR STYLING (non-Firefox)
+   ============================================================================= */
+
+.docket-tab-panel::-webkit-scrollbar {
+  width: 5px;
+}
+
+.docket-tab-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.docket-tab-panel::-webkit-scrollbar-thumb {
+  background-color: var(--background-modifier-border);
+  border-radius: 3px;
+}
+
+.docket-scratchpad-editor::-webkit-scrollbar {
+  width: 4px;
+}
+
+.docket-scratchpad-editor::-webkit-scrollbar-thumb {
+  background-color: var(--background-modifier-border);
+  border-radius: 2px;
+}
