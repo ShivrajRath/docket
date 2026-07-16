@@ -28,7 +28,7 @@ DayDeck ensures you never lose sight of the big picture while staying focused on
 
 ### Light Mode
 
-![Light Mode](screenshots/light-mode.png)
+![Light Mode](screenshots/light-mode-with-notification.png)
 
 ### Dark Mode
 
@@ -36,7 +36,7 @@ DayDeck ensures you never lose sight of the big picture while staying focused on
 
 ### Tag Filtering
 
-![Filter by Tags](screenshots/filter-by-tags.png)
+![Filter by Tags](screenshots/filter-by-tag.png)
 
 ### Task Reminders
 
@@ -44,11 +44,15 @@ DayDeck ensures you never lose sight of the big picture while staying focused on
 
 ### Section Settings
 
-![Section Settings](screenshots/settings-sections.png)
+![Section Settings](screenshots/sections-settings.png)
 
 ### Tag Settings
 
-![Tag Settings](screenshots/settings-tags.png)
+![Tag Settings](screenshots/semantic-tags-settings.png)
+
+### Waiting Time Counters
+
+![Waiting Time](screenshots/waiting-time.png)
 
 ---
 
