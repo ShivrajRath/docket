@@ -2,7 +2,7 @@
   "id": "daydeck",
   "name": "DayDeck",
   "version": "1.0.2",
-  "minAppVersion": "1.13.0",
+  "minAppVersion": "0.15.0",
   "description": "Organize your mind: a powerful cognitive dashboard that separates strategy from frictionless execution.",
   "author": "Shivraj Rath",
   "authorUrl": "https://novicelab.org",
