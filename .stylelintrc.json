@@ -1,0 +1,21 @@
+{
+  "extends": "stylelint-config-standard",
+  "plugins": [
+    "stylelint-no-unsupported-browser-features"
+  ],
+  "rules": {
+    "declaration-no-important": true,
+    "plugin/no-unsupported-browser-features": [true, {
+      "browsers": [
+        "Chrome >= 114"
+      ],
+      "ignore": [
+        "css-scrollbar"
+      ]
+    }],
+    "selector-class-pattern": null,
+    "custom-property-pattern": null,
+    "no-descending-specificity": null,
+    "declaration-property-value-keyword-no-deprecated": null
+  }
+}

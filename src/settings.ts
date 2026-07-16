@@ -35,7 +35,7 @@ export class DayDeckSettingTab extends PluginSettingTab {
       cls: 'mod-cta docket-add-btn',
       text: '+ Add section',
     });
-    addBtn.addEventListener('click', async () => {
+    addBtn.addEventListener('click', () => {
       const maxOrder = this.plugin.settings.buckets.reduce((max, b) => Math.max(max, b.order), -1);
       this.plugin.settings.buckets.push({
         id: generateId(),
@@ -46,7 +46,7 @@ export class DayDeckSettingTab extends PluginSettingTab {
         showCounter: false,
         widthPx: 320,
       });
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
       this.update();
     });
   }
@@ -70,9 +70,9 @@ export class DayDeckSettingTab extends PluginSettingTab {
         cls: 'docket-settings-icon-input',
         attr: { type: 'text', value: bucket.icon, maxlength: '4' },
       });
-      iconInput.addEventListener('change', async () => {
+      iconInput.addEventListener('change', () => {
         bucket.icon = iconInput.value || '📌';
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
 
       const nameCell = row.createDiv('docket-settings-cell');
@@ -81,16 +81,16 @@ export class DayDeckSettingTab extends PluginSettingTab {
         attr: { type: 'text', value: bucket.name },
       });
 
-      const saveSectionName = async () => {
+      const saveSectionName = () => {
         bucket.name = nameInput.value.trim() || 'Section';
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       };
 
       nameInput.addEventListener('change', saveSectionName);
-      nameInput.addEventListener('keydown', async (e: KeyboardEvent) => {
+      nameInput.addEventListener('keydown', (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
           e.preventDefault();
-          await saveSectionName();
+          void saveSectionName();
           nameInput.blur();
         }
       });
@@ -104,10 +104,10 @@ export class DayDeckSettingTab extends PluginSettingTab {
         cls: 'docket-settings-color-input',
         attr: { type: 'color', value: bucket.color },
       });
-      colorInput.addEventListener('input', async () => {
+      colorInput.addEventListener('input', () => {
         bucket.color = colorInput.value;
         colorSwatch.setCssStyles({ backgroundColor: bucket.color });
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
 
       const counterCell = row.createDiv('docket-settings-cell');
@@ -116,9 +116,9 @@ export class DayDeckSettingTab extends PluginSettingTab {
         attr: { type: 'checkbox' },
       });
       counterCheckbox.checked = bucket.showCounter;
-      counterCheckbox.addEventListener('change', async () => {
+      counterCheckbox.addEventListener('change', () => {
         bucket.showCounter = counterCheckbox.checked;
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
 
       const actCell = row.createDiv('docket-settings-cell docket-settings-actions');
@@ -131,10 +131,10 @@ export class DayDeckSettingTab extends PluginSettingTab {
       if (index === 0) {
         upBtn.disabled = true;
       } else {
-        upBtn.addEventListener('click', async () => {
+        upBtn.addEventListener('click', () => {
           const prev = sorted[index - 1];
           [bucket.order, prev.order] = [prev.order, bucket.order];
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
           this.update();
         });
       }
@@ -147,10 +147,10 @@ export class DayDeckSettingTab extends PluginSettingTab {
       if (index === sorted.length - 1) {
         downBtn.disabled = true;
       } else {
-        downBtn.addEventListener('click', async () => {
+        downBtn.addEventListener('click', () => {
           const next = sorted[index + 1];
           [bucket.order, next.order] = [next.order, bucket.order];
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
           this.update();
         });
       }
@@ -161,12 +161,12 @@ export class DayDeckSettingTab extends PluginSettingTab {
         text: 'Delete',
       });
       delBtn.addEventListener('click', () => {
-        new ConfirmModal(this.plugin.app, `Delete section "${bucket.name}"?\n\nTasks inside will remain but won't appear on the Dashboard until assigned to another section.`, async () => {
+        new ConfirmModal(this.plugin.app, `Delete section "${bucket.name}"?\n\nTasks inside will remain but won't appear on the Dashboard until assigned to another section.`, () => {
           this.plugin.settings.buckets = this.plugin.settings.buckets.filter(
             (b) => b.id !== bucket.id,
           );
           normalizeBucketOrder(this.plugin.settings.buckets);
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
           this.update();
         }).open();
       });
@@ -186,13 +186,13 @@ export class DayDeckSettingTab extends PluginSettingTab {
       cls: 'mod-cta docket-add-btn',
       text: '+ Add tag',
     });
-    addBtn.addEventListener('click', async () => {
+    addBtn.addEventListener('click', () => {
       this.plugin.settings.tags.push({
         id: generateId(),
         name: 'NewTag',
         color: '#888888',
       });
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
       this.update();
     });
   }
@@ -214,18 +214,18 @@ export class DayDeckSettingTab extends PluginSettingTab {
         attr: { type: 'text', value: tag.name },
       });
 
-      const saveTagName = async () => {
+      const saveTagName = () => {
         tag.name = nameInput.value.replace(/\s+/g, '').replace(/[^A-Za-z0-9_-]/g, '') || 'Tag';
         nameInput.value = tag.name;
         previewPill.textContent = `#${tag.name}`;
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       };
 
       nameInput.addEventListener('change', saveTagName);
-      nameInput.addEventListener('keydown', async (e: KeyboardEvent) => {
+      nameInput.addEventListener('keydown', (e: KeyboardEvent) => {
         if (e.key === 'Enter') {
           e.preventDefault();
-          await saveTagName();
+          void saveTagName();
           nameInput.blur();
         }
       });
@@ -239,11 +239,11 @@ export class DayDeckSettingTab extends PluginSettingTab {
         cls: 'docket-settings-color-input',
         attr: { type: 'color', value: tag.color },
       });
-      colorInput.addEventListener('input', async () => {
+      colorInput.addEventListener('input', () => {
         tag.color = colorInput.value;
         colorSwatch.setCssStyles({ backgroundColor: tag.color });
         previewPill.setCssProps({ '--docket-tag-color': tag.color });
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
 
       const previewCell = row.createDiv('docket-settings-cell');
@@ -260,7 +260,7 @@ export class DayDeckSettingTab extends PluginSettingTab {
         attr: { title: `Delete #${tag.name} (removed from all tasks)` },
       });
       delBtn.addEventListener('click', () => {
-        new ConfirmModal(this.plugin.app, `Delete tag #${tag.name}?\n\nIt will be removed from all tasks.`, async () => {
+        new ConfirmModal(this.plugin.app, `Delete tag #${tag.name}?\n\nIt will be removed from all tasks.`, () => {
           this.plugin.settings.tags = this.plugin.settings.tags.filter((t) => t.id !== tag.id);
           this.plugin.settings.tasks.forEach((task) => {
             task.tags = task.tags.filter((id) => id !== tag.id);
@@ -268,7 +268,7 @@ export class DayDeckSettingTab extends PluginSettingTab {
           if (this.plugin.settings.deepWorkTagId === tag.id) {
             this.plugin.settings.deepWorkTagId = this.plugin.settings.tags[0]?.id ?? '';
           }
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
           this.update();
         }).open();
       });

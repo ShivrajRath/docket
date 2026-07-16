@@ -157,7 +157,7 @@ export class ArchiveTab {
     // Restore button
     const restoreBtn = taskMain.createSpan({ cls: 'docket-restore-btn', text: 'Restore' });
     restoreBtn.setAttribute('title', 'Move back to Today bucket');
-    restoreBtn.addEventListener('click', async () => {
+    restoreBtn.addEventListener('click', () => {
       task.isCompleted = false;
       task.completedAt = undefined;
 
@@ -166,7 +166,7 @@ export class ArchiveTab {
       if (todayBucket) task.bucketId = todayBucket.id;
 
       task.createdAt = Date.now(); // treat as a fresh task
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
 
     // ── Meta row ──────────────────────────────────────────────────────────

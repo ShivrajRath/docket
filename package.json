@@ -1,12 +1,13 @@
 {
   "name": "daydeck",
   "version": "1.0.0",
-  "description": "Obsidian DayDeck Plugin — cognitive task management dashboard",
+  "description": "Organize your mind: a powerful cognitive dashboard that separates strategy from frictionless execution.",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
     "build": "tsc --noEmit -p tsconfig.json && node esbuild.config.mjs production",
-    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix",
+    "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix && npm run lint:css",
+    "lint:css": "stylelint \"**/*.css\" --fix",
     "format": "prettier --write .",
     "prepare": "husky install"
   },
@@ -27,6 +28,9 @@
     "husky": "^8.0.0",
     "obsidian": "latest",
     "prettier": "^2.8.8",
+    "stylelint": "^17.14.0",
+    "stylelint-config-standard": "^40.0.0",
+    "stylelint-no-unsupported-browser-features": "^8.1.1",
     "tslib": "2.6.2",
     "typescript": "5.4.5",
     "typescript-eslint": "^8.64.0"

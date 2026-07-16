@@ -100,11 +100,11 @@ export default class DayDeckPlugin extends Plugin {
       this.settings.buckets = DEFAULT_SETTINGS.buckets;
     } else {
       // Migrate legacy two-column ordering into a single global order
-      const hasLegacyColumns = this.settings.buckets.some((b) => b.column !== undefined);
+      const hasLegacyColumns = this.settings.buckets.some((b) => (b as { column?: number }).column !== undefined);
       if (hasLegacyColumns) {
         this.settings.buckets.sort((a, b) => {
-          const colA = a.column ?? 1;
-          const colB = b.column ?? 1;
+          const colA = (a as { column?: number }).column ?? 1;
+          const colB = (b as { column?: number }).column ?? 1;
           if (colA !== colB) return colA - colB;
           return a.order - b.order;
         });

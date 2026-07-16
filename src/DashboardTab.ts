@@ -43,7 +43,7 @@ export class DashboardTab {
     sorted.forEach((bucket) => this.renderBucket(bucket, grid));
 
     const addSectionBtn = inner.createDiv({ cls: 'docket-add-section-btn', text: '+ Add section' });
-    addSectionBtn.addEventListener('click', async () => {
+    addSectionBtn.addEventListener('click', () => {
       const maxOrder = this.plugin.settings.buckets.reduce((max, b) => Math.max(max, b.order), -1);
       this.plugin.settings.buckets.push({
         id: generateId(),
@@ -54,7 +54,7 @@ export class DashboardTab {
         showCounter: false,
         widthPx: 320,
       });
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
   }
 
@@ -120,12 +120,12 @@ export class DashboardTab {
     });
     delBtn.addEventListener('click', (e: MouseEvent) => {
       e.stopPropagation();
-      new ConfirmModal(this.plugin.app, `Delete section "${bucket.name}"?\nTasks inside will remain but won't appear on the Dashboard.`, async () => {
+      new ConfirmModal(this.plugin.app, `Delete section "${bucket.name}"?\nTasks inside will remain but won't appear on the Dashboard.`, () => {
         this.plugin.settings.buckets = this.plugin.settings.buckets.filter(
           (b) => b.id !== bucket.id,
         );
         normalizeBucketOrder(this.plugin.settings.buckets);
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       }).open();
     });
 
@@ -232,7 +232,7 @@ export class DashboardTab {
       }
     });
 
-    bucketEl.addEventListener('drop', async (e: DragEvent) => {
+    bucketEl.addEventListener('drop', (e: DragEvent) => {
       const dataTransfer = e.dataTransfer;
       e.preventDefault();
       bucketEl.removeClass('docket-bucket-drop-target');
@@ -251,7 +251,7 @@ export class DashboardTab {
         b.order = i;
       });
 
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
   }
 
@@ -278,10 +278,10 @@ export class DashboardTab {
     });
     checkbox.checked = task.isCompleted;
 
-    checkbox.addEventListener('change', async () => {
+    checkbox.addEventListener('change', () => {
       task.isCompleted = checkbox.checked;
       task.completedAt = checkbox.checked ? Date.now() : undefined;
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
 
     const textEl = taskMain.createSpan({ cls: 'docket-task-text', text: task.text });
@@ -298,7 +298,7 @@ export class DashboardTab {
       input.focus();
 
       let committed = false;
-      const commit = async () => {
+      const commit = () => {
         if (committed) return;
         committed = true;
         const val = input.value.trim();
@@ -322,16 +322,16 @@ export class DashboardTab {
             }
           }
 
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
         } else if (input.parentNode === taskMain) {
           taskMain.replaceChild(textEl, input);
         }
       };
 
-      input.addEventListener('keydown', async (ev: KeyboardEvent) => {
+      input.addEventListener('keydown', (ev: KeyboardEvent) => {
         if (ev.key === 'Enter') {
           ev.preventDefault();
-          await commit();
+          void commit();
         }
         if (ev.key === 'Escape') {
           committed = true;
@@ -367,10 +367,10 @@ export class DashboardTab {
       attr: { title: 'Delete task' },
       text: '×',
     });
-    delBtn.addEventListener('click', async (e) => {
+    delBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       this.plugin.settings.tasks = this.plugin.settings.tasks.filter((t) => t.id !== task.id);
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
 
     const metaRow = card.createDiv('docket-task-tag-row');
@@ -382,10 +382,10 @@ export class DashboardTab {
       pill.setCssProps({ '--docket-tag-color': tag.color });
 
       const removeTag = pill.createSpan({ cls: 'docket-inline-tag-remove', text: '×' });
-      removeTag.addEventListener('click', async (e: MouseEvent) => {
+      removeTag.addEventListener('click', (e: MouseEvent) => {
         e.stopPropagation();
         task.tags = task.tags.filter((id) => id !== tagId);
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
     });
 
@@ -472,7 +472,7 @@ export class DashboardTab {
       }
     });
 
-    taskList.addEventListener('drop', async (e: DragEvent) => {
+    taskList.addEventListener('drop', (e: DragEvent) => {
       const dataTransfer = e.dataTransfer;
       if (_draggedBucketId) return;
       e.preventDefault();
@@ -506,7 +506,7 @@ export class DashboardTab {
 
       countEl.textContent = String(this.getActiveTasks(bucketId).length);
 
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
   }
 
@@ -635,7 +635,7 @@ export class DashboardTab {
       }
     });
 
-    input.addEventListener('keydown', async (e: KeyboardEvent) => {
+    input.addEventListener('keydown', (e: KeyboardEvent) => {
       if (suggestionBox) {
         if (e.key === 'ArrowDown') {
           e.preventDefault();
@@ -676,7 +676,7 @@ export class DashboardTab {
 
       if (e.key === 'Enter') {
         e.preventDefault();
-        await commit();
+        void commit();
       }
       if (e.key === 'Escape') {
         committed = true;
@@ -691,7 +691,7 @@ export class DashboardTab {
     });
 
     let committed = false;
-    const commit = async () => {
+    const commit = () => {
       if (committed) return;
       committed = true;
       const raw = input.value.trim();
@@ -722,7 +722,7 @@ export class DashboardTab {
         order: maxOrder + 1,
       });
 
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     };
   }
 
@@ -738,12 +738,12 @@ export class DashboardTab {
             item
               .setTitle(`Move to ${bucket.icon} ${bucket.name}`)
               .setIcon('arrow-right')
-              .onClick(async () => {
+              .onClick(() => {
                 if (task.bucketId !== bucket.id) {
                   task.bucketUpdatedAt = Date.now();
                 }
                 task.bucketId = bucket.id;
-                await this.plugin.saveSettings();
+                void this.plugin.saveSettings();
               }),
           );
         });
@@ -762,9 +762,9 @@ export class DashboardTab {
         item
           .setTitle('Clear reminder')
           .setIcon('bell-off')
-          .onClick(async () => {
+          .onClick(() => {
             task.reminderAt = undefined;
-            await this.plugin.saveSettings();
+            void this.plugin.saveSettings();
           }),
       );
     }
@@ -777,13 +777,13 @@ export class DashboardTab {
         item
           .setTitle(`${hasTag ? '✓ ' : ''}#${tag.name}`)
           .setIcon(hasTag ? 'check' : 'tag')
-          .onClick(async () => {
+          .onClick(() => {
             if (hasTag) {
               task.tags = task.tags.filter((id) => id !== tag.id);
             } else {
               task.tags = [...task.tags, tag.id];
             }
-            await this.plugin.saveSettings();
+            void this.plugin.saveSettings();
           }),
       );
     });
@@ -794,9 +794,9 @@ export class DashboardTab {
       item
         .setTitle('Delete task')
         .setIcon('trash')
-        .onClick(async () => {
+        .onClick(() => {
           this.plugin.settings.tasks = this.plugin.settings.tasks.filter((t) => t.id !== task.id);
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
         }),
     );
 
@@ -864,16 +864,16 @@ class BucketEditModal extends Modal {
       .setName('Icon')
       .setDesc('Emoji or short text icon')
       .addText((text) => {
-        text.setValue(this.bucket.icon).onChange(async (value) => {
+        text.setValue(this.bucket.icon).onChange((value) => {
           this.bucket.icon = value || '📌';
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
         });
       });
 
     new Setting(contentEl).setName('Name').addText((text) => {
-      text.setValue(this.bucket.name).onChange(async (value) => {
+      text.setValue(this.bucket.name).onChange((value) => {
         this.bucket.name = value.trim() || 'Section';
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
     });
 
@@ -884,12 +884,12 @@ class BucketEditModal extends Modal {
         text.inputEl.type = 'number';
         text.inputEl.min = '240';
         text.inputEl.max = '900';
-        text.setValue(String(this.bucket.widthPx ?? 320)).onChange(async (value) => {
+        text.setValue(String(this.bucket.widthPx ?? 320)).onChange((value) => {
           const parsed = Number.parseInt(value, 10);
           this.bucket.widthPx = Number.isFinite(parsed)
             ? Math.min(900, Math.max(240, parsed))
             : 320;
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
         });
       });
 
@@ -897,9 +897,9 @@ class BucketEditModal extends Modal {
       .setName('Color')
       .setDesc('Accent color for the section header')
       .addColorPicker((picker) => {
-        picker.setValue(this.bucket.color).onChange(async (value) => {
+        picker.setValue(this.bucket.color).onChange((value) => {
           this.bucket.color = value;
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
         });
       });
 
@@ -911,12 +911,12 @@ class BucketEditModal extends Modal {
       .setName('Section Description')
       .setDesc('Purpose of this section (shown in info tooltip)')
       .addTextArea((text) => {
-        text.setValue(tooltipDesc).onChange(async (value) => {
+        text.setValue(tooltipDesc).onChange((value) => {
           if (!this.bucket.tooltip) {
             this.bucket.tooltip = { description: '', examples: [] };
           }
           this.bucket.tooltip.description = value.trim();
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
         });
       });
 
@@ -924,7 +924,7 @@ class BucketEditModal extends Modal {
       .setName('Section Examples')
       .setDesc('4 practical examples (one per line, shown in info tooltip)')
       .addTextArea((text) => {
-        text.setValue(tooltipExamples).onChange(async (value) => {
+        text.setValue(tooltipExamples).onChange((value) => {
           if (!this.bucket.tooltip) {
             this.bucket.tooltip = { description: '', examples: [] };
           }
@@ -932,7 +932,7 @@ class BucketEditModal extends Modal {
             .split('\n')
             .map((line) => line.trim())
             .filter((line) => line.length > 0);
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
         });
       });
   }
@@ -1001,23 +1001,23 @@ class ReminderModal extends Modal {
         btn
           .setButtonText('Save reminder')
           .setCta()
-          .onClick(async () => {
+          .onClick(() => {
             const reminderAt = new Date(`${selectedDate}T${selectedTime}`).getTime();
             if (!Number.isNaN(reminderAt)) {
               this.task.reminderAt = reminderAt;
               this.task.reminderDateOnly = selectedDateOnly;
               this.task.reminderNotified = false;
-              await this.plugin.saveSettings();
+              void this.plugin.saveSettings();
             }
             this.close();
           });
       })
       .addButton((btn) => {
-        btn.setButtonText('Clear').onClick(async () => {
+        btn.setButtonText('Clear').onClick(() => {
           this.task.reminderAt = undefined;
           this.task.reminderDateOnly = undefined;
           this.task.reminderNotified = undefined;
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
           this.close();
         });
       });

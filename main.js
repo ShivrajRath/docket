@@ -274,7 +274,7 @@ var DashboardTab = class {
     const sorted = [...this.plugin.settings.buckets].sort((a, b) => a.order - b.order);
     sorted.forEach((bucket) => this.renderBucket(bucket, grid));
     const addSectionBtn = inner.createDiv({ cls: "docket-add-section-btn", text: "+ Add section" });
-    addSectionBtn.addEventListener("click", async () => {
+    addSectionBtn.addEventListener("click", () => {
       const maxOrder = this.plugin.settings.buckets.reduce((max, b) => Math.max(max, b.order), -1);
       this.plugin.settings.buckets.push({
         id: generateId(),
@@ -285,7 +285,7 @@ var DashboardTab = class {
         showCounter: false,
         widthPx: 320
       });
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
   }
   renderBucket(bucket, parent) {
@@ -343,12 +343,12 @@ var DashboardTab = class {
     delBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       new ConfirmModal(this.plugin.app, `Delete section "${bucket.name}"?
-Tasks inside will remain but won't appear on the Dashboard.`, async () => {
+Tasks inside will remain but won't appear on the Dashboard.`, () => {
         this.plugin.settings.buckets = this.plugin.settings.buckets.filter(
           (b) => b.id !== bucket.id
         );
         normalizeBucketOrder(this.plugin.settings.buckets);
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       }).open();
     });
     this.setupBucketDrag(header, bucketEl, bucket.id);
@@ -439,7 +439,7 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
         bucketEl.removeClass("docket-bucket-drop-target");
       }
     });
-    bucketEl.addEventListener("drop", async (e) => {
+    bucketEl.addEventListener("drop", (e) => {
       const dataTransfer = e.dataTransfer;
       e.preventDefault();
       bucketEl.removeClass("docket-bucket-drop-target");
@@ -454,7 +454,7 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
       buckets.forEach((b, i) => {
         b.order = i;
       });
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
   }
   renderTaskCard(task, parent, bucketId) {
@@ -476,10 +476,10 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
       attr: { type: "checkbox" }
     });
     checkbox.checked = task.isCompleted;
-    checkbox.addEventListener("change", async () => {
+    checkbox.addEventListener("change", () => {
       task.isCompleted = checkbox.checked;
       task.completedAt = checkbox.checked ? Date.now() : void 0;
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
     const textEl = taskMain.createSpan({ cls: "docket-task-text", text: task.text });
     textEl.addEventListener("dblclick", (e) => {
@@ -491,7 +491,7 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
       taskMain.replaceChild(input, textEl);
       input.focus();
       let committed = false;
-      const commit = async () => {
+      const commit = () => {
         if (committed) return;
         committed = true;
         const val = input.value.trim();
@@ -510,15 +510,15 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
               task.tags.push(tagId);
             }
           }
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
         } else if (input.parentNode === taskMain) {
           taskMain.replaceChild(textEl, input);
         }
       };
-      input.addEventListener("keydown", async (ev) => {
+      input.addEventListener("keydown", (ev) => {
         if (ev.key === "Enter") {
           ev.preventDefault();
-          await commit();
+          void commit();
         }
         if (ev.key === "Escape") {
           committed = true;
@@ -549,10 +549,10 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
       attr: { title: "Delete task" },
       text: "\xD7"
     });
-    delBtn.addEventListener("click", async (e) => {
+    delBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       this.plugin.settings.tasks = this.plugin.settings.tasks.filter((t) => t.id !== task.id);
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
     const metaRow = card.createDiv("docket-task-tag-row");
     task.tags.forEach((tagId) => {
@@ -561,10 +561,10 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
       const pill = metaRow.createSpan({ cls: "docket-inline-tag", text: `#${tag.name}` });
       pill.setCssProps({ "--docket-tag-color": tag.color });
       const removeTag = pill.createSpan({ cls: "docket-inline-tag-remove", text: "\xD7" });
-      removeTag.addEventListener("click", async (e) => {
+      removeTag.addEventListener("click", (e) => {
         e.stopPropagation();
         task.tags = task.tags.filter((id) => id !== tagId);
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
     });
     if (showCounter) {
@@ -637,7 +637,7 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
         this.removeDropIndicator(taskList);
       }
     });
-    taskList.addEventListener("drop", async (e) => {
+    taskList.addEventListener("drop", (e) => {
       const dataTransfer = e.dataTransfer;
       if (_draggedBucketId) return;
       e.preventDefault();
@@ -661,7 +661,7 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
         t.order = i;
       });
       countEl.textContent = String(this.getActiveTasks(bucketId).length);
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
   }
   getDropIndex(cards, mouseY) {
@@ -771,7 +771,7 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
         hideSuggestions();
       }
     });
-    input.addEventListener("keydown", async (e) => {
+    input.addEventListener("keydown", (e) => {
       var _a;
       if (suggestionBox) {
         if (e.key === "ArrowDown") {
@@ -811,7 +811,7 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
       }
       if (e.key === "Enter") {
         e.preventDefault();
-        await commit();
+        void commit();
       }
       if (e.key === "Escape") {
         committed = true;
@@ -824,7 +824,7 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
       void commit();
     });
     let committed = false;
-    const commit = async () => {
+    const commit = () => {
       if (committed) return;
       committed = true;
       const raw = input.value.trim();
@@ -850,7 +850,7 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
         bucketUpdatedAt: Date.now(),
         order: maxOrder + 1
       });
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     };
   }
   showTaskContextMenu(e, task) {
@@ -859,12 +859,12 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
     if (otherBuckets.length > 0) {
       otherBuckets.sort((a, b) => a.order - b.order).forEach((bucket) => {
         menu.addItem(
-          (item) => item.setTitle(`Move to ${bucket.icon} ${bucket.name}`).setIcon("arrow-right").onClick(async () => {
+          (item) => item.setTitle(`Move to ${bucket.icon} ${bucket.name}`).setIcon("arrow-right").onClick(() => {
             if (task.bucketId !== bucket.id) {
               task.bucketUpdatedAt = Date.now();
             }
             task.bucketId = bucket.id;
-            await this.plugin.saveSettings();
+            void this.plugin.saveSettings();
           })
         );
       });
@@ -875,9 +875,9 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
     );
     if (task.reminderAt) {
       menu.addItem(
-        (item) => item.setTitle("Clear reminder").setIcon("bell-off").onClick(async () => {
+        (item) => item.setTitle("Clear reminder").setIcon("bell-off").onClick(() => {
           task.reminderAt = void 0;
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
         })
       );
     }
@@ -885,21 +885,21 @@ Tasks inside will remain but won't appear on the Dashboard.`, async () => {
     this.plugin.settings.tags.forEach((tag) => {
       const hasTag = task.tags.includes(tag.id);
       menu.addItem(
-        (item) => item.setTitle(`${hasTag ? "\u2713 " : ""}#${tag.name}`).setIcon(hasTag ? "check" : "tag").onClick(async () => {
+        (item) => item.setTitle(`${hasTag ? "\u2713 " : ""}#${tag.name}`).setIcon(hasTag ? "check" : "tag").onClick(() => {
           if (hasTag) {
             task.tags = task.tags.filter((id) => id !== tag.id);
           } else {
             task.tags = [...task.tags, tag.id];
           }
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
         })
       );
     });
     menu.addSeparator();
     menu.addItem(
-      (item) => item.setTitle("Delete task").setIcon("trash").onClick(async () => {
+      (item) => item.setTitle("Delete task").setIcon("trash").onClick(() => {
         this.plugin.settings.tasks = this.plugin.settings.tasks.filter((t) => t.id !== task.id);
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       })
     );
     menu.showAtMouseEvent(e);
@@ -948,15 +948,15 @@ var BucketEditModal = class extends import_obsidian2.Modal {
     contentEl.addClass("docket-bucket-edit-modal");
     contentEl.createEl("h2", { text: "Edit Section" });
     new import_obsidian2.Setting(contentEl).setName("Icon").setDesc("Emoji or short text icon").addText((text) => {
-      text.setValue(this.bucket.icon).onChange(async (value) => {
+      text.setValue(this.bucket.icon).onChange((value) => {
         this.bucket.icon = value || "\u{1F4CC}";
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
     });
     new import_obsidian2.Setting(contentEl).setName("Name").addText((text) => {
-      text.setValue(this.bucket.name).onChange(async (value) => {
+      text.setValue(this.bucket.name).onChange((value) => {
         this.bucket.name = value.trim() || "Section";
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
     });
     new import_obsidian2.Setting(contentEl).setName("Width").setDesc("Section width in pixels").addText((text) => {
@@ -964,36 +964,36 @@ var BucketEditModal = class extends import_obsidian2.Modal {
       text.inputEl.type = "number";
       text.inputEl.min = "240";
       text.inputEl.max = "900";
-      text.setValue(String((_a2 = this.bucket.widthPx) != null ? _a2 : 320)).onChange(async (value) => {
+      text.setValue(String((_a2 = this.bucket.widthPx) != null ? _a2 : 320)).onChange((value) => {
         const parsed = Number.parseInt(value, 10);
         this.bucket.widthPx = Number.isFinite(parsed) ? Math.min(900, Math.max(240, parsed)) : 320;
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
     });
     new import_obsidian2.Setting(contentEl).setName("Color").setDesc("Accent color for the section header").addColorPicker((picker) => {
-      picker.setValue(this.bucket.color).onChange(async (value) => {
+      picker.setValue(this.bucket.color).onChange((value) => {
         this.bucket.color = value;
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
     });
     const tooltipDesc = ((_a = this.bucket.tooltip) == null ? void 0 : _a.description) || "";
     const tooltipExamples = ((_c = (_b = this.bucket.tooltip) == null ? void 0 : _b.examples) == null ? void 0 : _c.join("\n")) || "";
     new import_obsidian2.Setting(contentEl).setName("Section Description").setDesc("Purpose of this section (shown in info tooltip)").addTextArea((text) => {
-      text.setValue(tooltipDesc).onChange(async (value) => {
+      text.setValue(tooltipDesc).onChange((value) => {
         if (!this.bucket.tooltip) {
           this.bucket.tooltip = { description: "", examples: [] };
         }
         this.bucket.tooltip.description = value.trim();
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
     });
     new import_obsidian2.Setting(contentEl).setName("Section Examples").setDesc("4 practical examples (one per line, shown in info tooltip)").addTextArea((text) => {
-      text.setValue(tooltipExamples).onChange(async (value) => {
+      text.setValue(tooltipExamples).onChange((value) => {
         if (!this.bucket.tooltip) {
           this.bucket.tooltip = { description: "", examples: [] };
         }
         this.bucket.tooltip.examples = value.split("\n").map((line) => line.trim()).filter((line) => line.length > 0);
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
     });
   }
@@ -1041,22 +1041,22 @@ var ReminderModal = class extends import_obsidian2.Modal {
       });
     });
     new import_obsidian2.Setting(contentEl).addButton((btn) => {
-      btn.setButtonText("Save reminder").setCta().onClick(async () => {
+      btn.setButtonText("Save reminder").setCta().onClick(() => {
         const reminderAt = (/* @__PURE__ */ new Date(`${selectedDate}T${selectedTime}`)).getTime();
         if (!Number.isNaN(reminderAt)) {
           this.task.reminderAt = reminderAt;
           this.task.reminderDateOnly = selectedDateOnly;
           this.task.reminderNotified = false;
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
         }
         this.close();
       });
     }).addButton((btn) => {
-      btn.setButtonText("Clear").onClick(async () => {
+      btn.setButtonText("Clear").onClick(() => {
         this.task.reminderAt = void 0;
         this.task.reminderDateOnly = void 0;
         this.task.reminderNotified = void 0;
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
         this.close();
       });
     });
@@ -1210,13 +1210,13 @@ var ArchiveTab = class {
     taskMain.createSpan({ cls: "docket-task-text", text: task.text });
     const restoreBtn = taskMain.createSpan({ cls: "docket-restore-btn", text: "Restore" });
     restoreBtn.setAttribute("title", "Move back to Today bucket");
-    restoreBtn.addEventListener("click", async () => {
+    restoreBtn.addEventListener("click", () => {
       task.isCompleted = false;
       task.completedAt = void 0;
       const todayBucket = this.plugin.settings.buckets.find((b) => b.id === "today");
       if (todayBucket) task.bucketId = todayBucket.id;
       task.createdAt = Date.now();
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
     });
     const hasTagsOrDate = task.tags.length > 0 || task.completedAt;
     if (hasTagsOrDate) {
@@ -1460,7 +1460,7 @@ var DayDeckSettingTab = class extends import_obsidian4.PluginSettingTab {
       cls: "mod-cta docket-add-btn",
       text: "+ Add section"
     });
-    addBtn.addEventListener("click", async () => {
+    addBtn.addEventListener("click", () => {
       const maxOrder = this.plugin.settings.buckets.reduce((max, b) => Math.max(max, b.order), -1);
       this.plugin.settings.buckets.push({
         id: generateId(),
@@ -1471,7 +1471,7 @@ var DayDeckSettingTab = class extends import_obsidian4.PluginSettingTab {
         showCounter: false,
         widthPx: 320
       });
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
       this.update();
     });
   }
@@ -1490,24 +1490,24 @@ var DayDeckSettingTab = class extends import_obsidian4.PluginSettingTab {
         cls: "docket-settings-icon-input",
         attr: { type: "text", value: bucket.icon, maxlength: "4" }
       });
-      iconInput.addEventListener("change", async () => {
+      iconInput.addEventListener("change", () => {
         bucket.icon = iconInput.value || "\u{1F4CC}";
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
       const nameCell = row.createDiv("docket-settings-cell");
       const nameInput = nameCell.createEl("input", {
         cls: "docket-settings-text-input",
         attr: { type: "text", value: bucket.name }
       });
-      const saveSectionName = async () => {
+      const saveSectionName = () => {
         bucket.name = nameInput.value.trim() || "Section";
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       };
       nameInput.addEventListener("change", saveSectionName);
-      nameInput.addEventListener("keydown", async (e) => {
+      nameInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
-          await saveSectionName();
+          void saveSectionName();
           nameInput.blur();
         }
       });
@@ -1519,10 +1519,10 @@ var DayDeckSettingTab = class extends import_obsidian4.PluginSettingTab {
         cls: "docket-settings-color-input",
         attr: { type: "color", value: bucket.color }
       });
-      colorInput.addEventListener("input", async () => {
+      colorInput.addEventListener("input", () => {
         bucket.color = colorInput.value;
         colorSwatch.setCssStyles({ backgroundColor: bucket.color });
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
       const counterCell = row.createDiv("docket-settings-cell");
       const counterCheckbox = counterCell.createEl("input", {
@@ -1530,9 +1530,9 @@ var DayDeckSettingTab = class extends import_obsidian4.PluginSettingTab {
         attr: { type: "checkbox" }
       });
       counterCheckbox.checked = bucket.showCounter;
-      counterCheckbox.addEventListener("change", async () => {
+      counterCheckbox.addEventListener("change", () => {
         bucket.showCounter = counterCheckbox.checked;
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
       const actCell = row.createDiv("docket-settings-cell docket-settings-actions");
       const upBtn = actCell.createEl("button", {
@@ -1543,10 +1543,10 @@ var DayDeckSettingTab = class extends import_obsidian4.PluginSettingTab {
       if (index === 0) {
         upBtn.disabled = true;
       } else {
-        upBtn.addEventListener("click", async () => {
+        upBtn.addEventListener("click", () => {
           const prev = sorted[index - 1];
           [bucket.order, prev.order] = [prev.order, bucket.order];
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
           this.update();
         });
       }
@@ -1558,10 +1558,10 @@ var DayDeckSettingTab = class extends import_obsidian4.PluginSettingTab {
       if (index === sorted.length - 1) {
         downBtn.disabled = true;
       } else {
-        downBtn.addEventListener("click", async () => {
+        downBtn.addEventListener("click", () => {
           const next = sorted[index + 1];
           [bucket.order, next.order] = [next.order, bucket.order];
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
           this.update();
         });
       }
@@ -1573,12 +1573,12 @@ var DayDeckSettingTab = class extends import_obsidian4.PluginSettingTab {
       delBtn.addEventListener("click", () => {
         new ConfirmModal(this.plugin.app, `Delete section "${bucket.name}"?
 
-Tasks inside will remain but won't appear on the Dashboard until assigned to another section.`, async () => {
+Tasks inside will remain but won't appear on the Dashboard until assigned to another section.`, () => {
           this.plugin.settings.buckets = this.plugin.settings.buckets.filter(
             (b) => b.id !== bucket.id
           );
           normalizeBucketOrder(this.plugin.settings.buckets);
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
           this.update();
         }).open();
       });
@@ -1594,13 +1594,13 @@ Tasks inside will remain but won't appear on the Dashboard until assigned to ano
       cls: "mod-cta docket-add-btn",
       text: "+ Add tag"
     });
-    addBtn.addEventListener("click", async () => {
+    addBtn.addEventListener("click", () => {
       this.plugin.settings.tags.push({
         id: generateId(),
         name: "NewTag",
         color: "#888888"
       });
-      await this.plugin.saveSettings();
+      void this.plugin.saveSettings();
       this.update();
     });
   }
@@ -1617,17 +1617,17 @@ Tasks inside will remain but won't appear on the Dashboard until assigned to ano
         cls: "docket-settings-text-input",
         attr: { type: "text", value: tag.name }
       });
-      const saveTagName = async () => {
+      const saveTagName = () => {
         tag.name = nameInput.value.replace(/\s+/g, "").replace(/[^A-Za-z0-9_-]/g, "") || "Tag";
         nameInput.value = tag.name;
         previewPill.textContent = `#${tag.name}`;
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       };
       nameInput.addEventListener("change", saveTagName);
-      nameInput.addEventListener("keydown", async (e) => {
+      nameInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
-          await saveTagName();
+          void saveTagName();
           nameInput.blur();
         }
       });
@@ -1639,11 +1639,11 @@ Tasks inside will remain but won't appear on the Dashboard until assigned to ano
         cls: "docket-settings-color-input",
         attr: { type: "color", value: tag.color }
       });
-      colorInput.addEventListener("input", async () => {
+      colorInput.addEventListener("input", () => {
         tag.color = colorInput.value;
         colorSwatch.setCssStyles({ backgroundColor: tag.color });
         previewPill.setCssProps({ "--docket-tag-color": tag.color });
-        await this.plugin.saveSettings();
+        void this.plugin.saveSettings();
       });
       const previewCell = row.createDiv("docket-settings-cell");
       const previewPill = previewCell.createSpan({
@@ -1660,7 +1660,7 @@ Tasks inside will remain but won't appear on the Dashboard until assigned to ano
       delBtn.addEventListener("click", () => {
         new ConfirmModal(this.plugin.app, `Delete tag #${tag.name}?
 
-It will be removed from all tasks.`, async () => {
+It will be removed from all tasks.`, () => {
           var _a, _b;
           this.plugin.settings.tags = this.plugin.settings.tags.filter((t) => t.id !== tag.id);
           this.plugin.settings.tasks.forEach((task) => {
@@ -1669,7 +1669,7 @@ It will be removed from all tasks.`, async () => {
           if (this.plugin.settings.deepWorkTagId === tag.id) {
             this.plugin.settings.deepWorkTagId = (_b = (_a = this.plugin.settings.tags[0]) == null ? void 0 : _a.id) != null ? _b : "";
           }
-          await this.plugin.saveSettings();
+          void this.plugin.saveSettings();
           this.update();
         }).open();
       });
