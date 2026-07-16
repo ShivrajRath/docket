@@ -21,6 +21,11 @@ export class DayDeckSettingTab extends PluginSettingTab {
     return [];
   }
 
+  display(): void {
+    this.containerEl.empty();
+    this.renderBucketsSection(this.containerEl);
+    this.renderTagsSection(this.containerEl);
+  }
 
   private renderBucketsSection(parent: HTMLElement): void {
     const section = parent.createDiv('docket-settings-section');
