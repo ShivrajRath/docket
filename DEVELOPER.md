@@ -21,16 +21,20 @@ Add a new section to `CHANGELOG.md` following the [Keep a Changelog](https://kee
 ## [1.0.2] - YYYY-MM-DD
 
 ### Added
+
 - New feature description
 
 ### Changed
+
 - Changed feature description
 
 ### Fixed
+
 - Bug fix description
 ```
 
 The changelog format uses:
+
 - **Added**: New features
 - **Changed**: Changes to existing functionality
 - **Deprecated**: Features that will be removed in future releases
@@ -67,6 +71,8 @@ Once the tag is pushed, the GitHub Actions workflow (`.github/workflows/release.
 2. Create a GitHub release with the tag name
 3. Attach the required files: `main.js`, `manifest.json`, and `styles.css`
 4. Mark the release as a draft
+
+For more information about releasing plugins with GitHub Actions, see the [Obsidian documentation](https://docs.obsidian.md/Plugins/Releasing/Release+your+plugin+with+GitHub+Actions).
 
 ### 6. Publish to Obsidian
 
