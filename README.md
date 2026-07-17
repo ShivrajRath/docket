@@ -17,7 +17,7 @@ DayDeck ensures you never lose sight of the big picture while staying focused on
 
 ## 🚀 Quick Start
 
-1. **Install DayDeck** from the Obsidian Community Plugins store
+1. **Install DayDeck** from the [Obsidian Community Plugins store](https://community.obsidian.md/plugins/daydeck)
 2. **Open DayDeck** via the ribbon icon or `Ctrl+P` → "Open DayDeck dashboard"
 3. **Start capturing tasks** using the Quick Capture bar at the top
 4. **Organize your workflow** by dragging sections and tasks to fit your needs
@@ -105,10 +105,11 @@ DayDeck ensures you never lose sight of the big picture while staying focused on
 
 ### Option 1: Community Plugins (Recommended)
 
-1. Open **Settings → Community Plugins**
-2. Disable **Restricted Mode**
-3. Browse plugins and search for "DayDeck"
-4. Click **Install** and then **Enable**
+1. Visit the [DayDeck plugin page](https://community.obsidian.md/plugins/daydeck)
+2. Open **Settings → Community Plugins** in Obsidian
+3. Disable **Restricted Mode**
+4. Browse plugins and search for "DayDeck"
+5. Click **Install** and then **Enable**
 
 ### Option 2: Manual Installation
 
